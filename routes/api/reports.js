@@ -30,6 +30,12 @@ router.get('/find', (req, res) => {
 // @desc Put repot into database
 // @access Private
 router.post('/create', (req, res) => {
+
+	const modem = {
+		equipmentName: "Modem",
+		
+	}
+
 	const newReport = new Report({
 		name: req.body.name || '',
 		//date: Date.now || '',
@@ -45,12 +51,15 @@ router.post('/create', (req, res) => {
 		.then(report => res.json(report));
 });
 
-// @route POST api/reports/:id
+// @route POST api/reports/edit:id
 // @desc Update a report
 // @access private
 router.post('/edit', (req, res) => {
 	// Find report in database
+	console.log(res.query);
+	console.log(res.params);
 	const filter = req.query.id;
+	console.log(filter);
 	const updatedDoc = req.body;
 	Report
 		.updateOne(

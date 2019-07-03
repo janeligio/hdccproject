@@ -7,18 +7,15 @@ const EquipmentSchema = new Schema({
 	model: String,
 	description: String,
 	location: String,
-	incomingPort: String,
-	outgoingPort: String,
-	printerPort: String,
-	serverPort: String,
-	otherPort: String
+	notes: String, // Will hold notes on whether any ports are occupied
+	pictures: [String], // Array of possible urls
 });
 
 const ReportSchema = new Schema({
 	name: String,
 	date: {
-	 type: Date,
-	 default: Date.now
+		type: Date,
+		default: Date.now
 	},
 	circuitID: String,
 	modem: EquipmentSchema,
@@ -28,4 +25,5 @@ const ReportSchema = new Schema({
 });
 
 
+module.exports = Equipment = mongoose.model('Equipment', EquipmentSchema);
 module.exports = Report = mongoose.model('Report', ReportSchema);

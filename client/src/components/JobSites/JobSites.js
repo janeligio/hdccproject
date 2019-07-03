@@ -6,8 +6,6 @@ import './JobSites.css';
 import JobSite from './JobSiteSingleton/JobSite';
 
 
-
-
 class JobSites extends React.Component {
 	constructor(props) {
 		super(props);
@@ -25,11 +23,11 @@ class JobSites extends React.Component {
 
 
 	render() {
-	   const jobSites = this.state.jobsites.map((jobsite) => {
-      		return <JobSite key={jobsite._id} data={jobsite}/>
-    	});
+
 		return (
-        {jobSites}
+        this.state.jobsites.map(jobsite => (
+          <JobSite data={jobsite} />
+            ))
       );
 	}
 }

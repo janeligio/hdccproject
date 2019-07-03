@@ -17,8 +17,8 @@ class App extends Component {
     <Router>
       <Header />
       <div className="App">
-        <Route path="/" component={JobSites} />
-        <Route path="/create" component={CreateReport} />
+        <Route exact path="/" component={JobSites} />
+        <Route exact path="/create" component={CreateReport} />
       </div>
     </Router>
     );
@@ -29,7 +29,7 @@ class App extends Component {
 
 const Header = (props) => (
   <header className="header">
-    <Link to="/"><h1>HDCC Job Sites</h1></Link>
+    <Link to="/"><h2>HDCC Job Sites</h2></Link>
     <Link to="/create">Create Report</Link>
   </header>
 );

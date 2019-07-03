@@ -5,7 +5,13 @@ class CreateReport extends React.Component {
 	state = {};
 
 	render() {
-		return <h1>create report</h1>
+		return (
+			<form noValidate onSubmit={this.handleSubmit}>
+			<h1>Create a report</h1>
+			<label>Job Site Name</label>
+			<input type="text" />
+			</form>
+		);
 	}
 }
 

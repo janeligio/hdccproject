@@ -1,15 +1,22 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import axios from 'axios';
 import './CreateReport.css';
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
 import EquipmentFieldset from './EquipmentFieldset';
+import { Link } from 'react-router-dom';
 
 class CreateReport extends React.Component {
 	state = {
 		date: moment(Date.now()),	
 	};
+	addWirelessRouter = (event) => {
+		ReactDOM.render(<div>hello</div>, document.getElementById('additional-routers'));
+	}
+	addSwitch = (event) => {
 
+	}
 	render() {
 		return (
 			<div>
@@ -51,8 +58,11 @@ class CreateReport extends React.Component {
 			</fieldset>
 			<EquipmentFieldset equipmentName="Modem" />
 			<EquipmentFieldset equipmentName="Router" />
-			<EquipmentFieldset equipmentName="Wireless Router" />
-			<EquipmentFieldset equipmentName="Switch" />
+			<EquipmentFieldset equipmentName="Wireless Routers" />
+			<div id="additional-routers"></div>
+			<Link onClick={this.addWirelessRouter}>Add a wireless router</Link>
+			<EquipmentFieldset equipmentName="Switches" />
+			<Link onClick={this.addSwitch}>Add another switch</Link>
 
 			</form>
 			</div>

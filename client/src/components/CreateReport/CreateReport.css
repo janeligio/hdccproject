@@ -1,6 +1,8 @@
 #create-form-container {
 	padding: 2em;
  	box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+ 	width: 450px;
+ 	margin: 0 auto;
 }
 
 #create-form-container > * {
@@ -61,7 +63,6 @@ label {
 }
 
 .equipment-header {
-	border-bottom: 1px solid #CCC;
 }
 
 .btn {
@@ -82,4 +83,17 @@ label {
 
 .btn-show {
 	background-color: green;
+}
+
+.equipment-btn {
+  color: inherit;
+  text-decoration: inherit;
+}
+.equipment-btn:hover {
+  color: inherit;
+  text-decoration: inherit;
+  background-color: #CCC;
+  transition: .5s;
+  border-radius: 5px;
+  color: white;
 }

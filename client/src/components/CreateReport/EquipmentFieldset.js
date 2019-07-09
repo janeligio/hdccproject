@@ -1,5 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
+import { Link } from 'react-router-dom';
 
 class EquipmentFieldset extends React.Component {
 state = { hidden: true};
@@ -19,8 +20,9 @@ render() {
 	});
 	return (
 	<div>
-<button className={hideBtn} onClick={this.hide}>{this.state.hidden?'+':'-'}</button>		<label className="equipment-header">{this.props.equipmentName}
-		</label>
+	<label className="equipment-header">
+		<Link className="equipment-btn" onClick={this.hide}>{this.props.equipmentName}</Link>
+	</label>
 		<fieldset className={hidden}>
 			<input 
                 name="equipment" 

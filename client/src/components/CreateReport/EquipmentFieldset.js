@@ -25,49 +25,41 @@ render() {
 	</label>
 		<fieldset className={hidden}>
 			<input 
-                name="equipment" 
-                value={ this.state.circuitId } 
-          		
+                name="brand" 
+                value={ this.props.brand } 
                 placeholder="Brand" 
                 type="text" 
                 tabIndex="3" 
-                autoFocus/>
+                autoFocus
+                onChange={this.props.handleChange}/>
 				<input 
-                name="equipment" 
-                value={ this.state.circuitId } 
-                 
+                name="model" 
+                value={ this.props.model }
                 placeholder="Model" 
                 type="text" 
                 tabIndex="3" 
+                onChange={this.props.handleChange}
                 autoFocus/>
 				<input 
-                name="equipment" 
+                name="description" 
                 value={ this.state.circuitId } 
-                 
-                placeholder="Model" 
-                type="text" 
-                tabIndex="3" 
-                autoFocus/>
-				<input 
-                name="equipment" 
-                value={ this.state.circuitId } 
-                 
+                onChange={this.props.handleChange}                 
                 placeholder="Description" 
                 type="text" 
                 tabIndex="3" 
                 autoFocus/>
 				<input 
-                name="equipment" 
+                name="location" 
                 value={ this.state.circuitId } 
-                 
+                onChange={this.props.handleChange}                                  
                 placeholder="Location" 
                 type="text" 
                 tabIndex="3" 
                 autoFocus/>
 				<input 
-                name="equipment" 
+                name="notes" 
                 value={ this.state.circuitId } 
-                 
+                onChange={this.props.handleChange}                                                   
                 placeholder="Ports" 
                 type="text" 
                 tabIndex="3" 

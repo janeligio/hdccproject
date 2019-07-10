@@ -9,13 +9,36 @@ import { Link } from 'react-router-dom';
 
 class CreateReport extends React.Component {
 	state = {
-		date: moment(Date.now()),	
+		date: moment(Date.now()),
+		site: '',
+		circuitId: '',
+		modem: {equipmentName: 'modem'},
+		router: {equipmentName: 'router'},
+		wirelessRouters: [],
+		switches: []
+
 	};
 	addWirelessRouter = (event) => {
-		ReactDOM.render(<div>hello</div>, document.getElementById('additional-routers'));
+		this.setState({wirelessRouters: [...this.state.wirelessRouters, {equipmentName: 'wirelessRouter'} ] } );
 	}
 	addSwitch = (event) => {
-
+		this.setState({switches: [...this.state.switches, {equipmentName: 'switch'} ] } );
+	}
+	handleChange = ({target}) => {
+		this.setState({[target.name] : target.value});
+		console.log(target.value);
+	}
+	handleModem = ({target}) => {
+		const field = target.name;
+		this.setState({modem: {...this.state.modem, [field]: target.value} });
+	}
+	handleRouter = ({target}) => {
+		const field = target.name;
+		this.setState({router: {...this.state.router, [field]: target.value} });
+	}
+	handleWireless = ({target}, x) => {
+		console.log(`Target: ${target} X: ${x}`);
+		
 	}
 	render() {
 		return (
@@ -56,14 +79,24 @@ class CreateReport extends React.Component {
                 tabIndex="3" 
                 autoFocus/>
 			</fieldset>
-			<EquipmentFieldset equipmentName="Modem" />
-			<EquipmentFieldset equipmentName="Router" />
-			<EquipmentFieldset equipmentName="Wireless Routers" />
-			<div id="additional-routers"></div>
+			<EquipmentFieldset data={this.state.modem} handleChange={this.handleModem} equipmentName="Modem" />
+			<EquipmentFieldset data={this.state.router} handleChange={this.handleRouter} equipmentName="Router" />
+			{ 
+				this.state.wirelessRouters.map((router, index) => {
+					let name = `Wireless Router #${index+1}`;
+					return <EquipmentFieldset index={index} data={this.state.wirelessRouters[index]} handleChange={this.handleWireless} equipmentName={name} />;
+					}
+				)
+			}
 			<Link onClick={this.addWirelessRouter}>Add a wireless router</Link>
-			<EquipmentFieldset equipmentName="Switches" />
+			{ 
+				this.state.switches.map((item, index) => {
+					let name = `Switch #${index+1}`;
+					return <EquipmentFieldset equipmentName={name} />;
+					}
+				)
+			}
 			<Link onClick={this.addSwitch}>Add another switch</Link>
-
 			</form>
 			</div>
 		);

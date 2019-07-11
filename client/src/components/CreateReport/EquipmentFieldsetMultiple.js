@@ -32,19 +32,19 @@ render() {
                 type="text" 
                 tabIndex="3" 
                 autoFocus
-                onChange={() => this.props.handleChange(index)}/>
+                onChange={this.props.handleChange(index)}/>
                 <input 
                 name="model" 
                 value={ this.props.model }
                 placeholder="Model" 
                 type="text" 
                 tabIndex="3" 
-                onChange={() => this.props.handleChange(index)}
+                onChange={this.props.handleChange(index)}
                 autoFocus/>
                 <input 
                 name="description" 
                 value={ this.state.circuitId } 
-                onChange={() => this.props.handleChange(index)}                 
+                onChange={this.props.handleChange(index)}                 
                 placeholder="Description" 
                 type="text" 
                 tabIndex="3" 
@@ -52,7 +52,7 @@ render() {
                 <input 
                 name="location" 
                 value={ this.state.circuitId } 
-                onChange={() => this.props.handleChange(index)}                                  
+                onChange={this.props.handleChange(index)}                                  
                 placeholder="Location" 
                 type="text" 
                 tabIndex="3" 
@@ -60,7 +60,7 @@ render() {
                 <input 
                 name="notes" 
                 value={ this.state.circuitId } 
-                onChange={() => this.props.handleChange(index)}                                                   
+                onChange={this.props.handleChange(index)}                                                   
                 placeholder="Ports" 
                 type="text" 
                 tabIndex="3" 

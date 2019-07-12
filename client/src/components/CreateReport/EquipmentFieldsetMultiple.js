@@ -23,6 +23,7 @@ render() {
         <div>
         <label className="equipment-header">
                 <Link className="equipment-btn" onClick={this.hide}>{this.props.equipmentName}</Link>
+                <Link className="equipment-btn" onClick={this.props.remove(index)}>Remove</Link>
         </label>
                 <fieldset className={hidden}>
                 <input 

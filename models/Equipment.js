@@ -11,20 +11,4 @@ const EquipmentSchema = new Schema({
 	pictures: {type: [String], default: []}, // Array of possible urls
 });
 
-const ReportSchema = new Schema({
-	name: {type: String, default: ''},
-	date: {
-		type: Date,
-		default: Date.now
-	},
-	circuitID: {type: String, default: ''},
-	modem: EquipmentSchema,
-	router: EquipmentSchema,
-	wirelessRouters: [EquipmentSchema],
-	switches: [EquipmentSchema], 
-});
-
-module.exports = {
-	Equipment: mongoose.model('Equipment', EquipmentSchema),
-	Report: mongoose.model('Report', ReportSchema)
-}
+module.exports = Equipment = mongoose.model('Equipment', EquipmentSchema);

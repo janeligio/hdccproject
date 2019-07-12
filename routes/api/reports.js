@@ -1,14 +1,14 @@
 const express = require('express');
 const router = express.Router();
-
-// Report model
-const Report = require('../../models/Report');
+const _ = require('lodash');
+// Models
+const Report = require('../../models/Report').Report;
+const Equipment = require('../../models/Report').Equipment;
 
 // @route GET api/reports
 // @desc Get all reports
 // @access Public
 router.get('/', (req, res) => {
-	console.log(Report.find());
 	Report
 		.find() // Get all report documents
 		.then(reports => res.json(reports));
@@ -26,26 +26,32 @@ router.get('/find', (req, res) => {
 
 
 
-// @route POST api/reports
+// @route POST api/reports/create
 // @desc Put repot into database
 // @access Private
 router.post('/create', (req, res) => {
-
-	const modem = {
-		equipmentName: "Modem",
-		
-	}
+	const newModem = new Equipment(req.body.modem);
+	const newRouter = new Equipment(req.body.router);
+	const newWirelessRouters = 
+		req.body.wirelessRouters.length != 0 
+		? _.map(req.body.wirelessRouters, 
+			router => (new Equipment(router)))
+		: [];
+	const newSwitches = 
+		req.body.switches.length != 0
+		? _.map(req.body.switches, 
+			switchInstance => (new Equipment(switchInstance)))
+		: [];
 
 	const newReport = new Report({
-		name: req.body.name || '',
-		//date: Date.now || '',
-		circuitID: req.body.circuitID || '',
-		modem: {},
-		router: {},
-		wirelessRouters: {},
-		switches: {},
+		name: req.body.name,
+		date: req.body.date,
+		circuitID: req.body.circuitID,
+		modem: newModem,
+		router: newRouter,
+		wirelessRouters: newWirelessRouters,
+		switches: newSwitches,
 	})
-
 	newReport
 		.save()
 		.then(report => res.json(report));

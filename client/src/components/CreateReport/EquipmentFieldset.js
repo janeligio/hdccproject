@@ -1,14 +1,16 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Link } from 'react-router-dom';
+import { makeStyles } from '@material-ui/core/styles';
+import Button from '@material-ui/core/Button';
 
 class EquipmentFieldset extends React.Component {
 state = { hidden: true};
 
 hide = (event) => {
 	event.preventDefault();
-	this.setState({hidden: !this.state.hidden});
-}
+	this.setState({hidden: !this.state.hidden});}
+
 render() {
 	const hidden = classNames({
 		'hidden': this.state.hidden
@@ -21,8 +23,8 @@ render() {
 	return (
 	<div>
 	<label className="equipment-header">
-		<Link className="equipment-btn" onClick={this.hide}>{this.props.equipmentName}</Link>
-	</label>
+	        <EquipmentButton name={this.props.equipmentName} action={this.hide}/>       
+        </label>
 		<fieldset className={hidden}>
 			<input 
                 name="brand" 
@@ -68,6 +70,22 @@ render() {
 	</div>
 	);
 }
+}
+
+const useStyles = makeStyles(theme => ({
+  button: {
+    margin: theme.spacing(1),
+  },
+  input: {
+    display: 'none',
+  },
+}));
+
+function EquipmentButton({action, name}) {
+        const classes = useStyles();
+        return <Button onClick={action} href="#text-buttons" className={classes.button}>
+                {name}
+                </Button>;       
 }
 
 export default EquipmentFieldset;

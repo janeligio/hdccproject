@@ -1,6 +1,9 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Link } from 'react-router-dom';
+import { makeStyles } from '@material-ui/core/styles';
+import Button from '@material-ui/core/Button';
+
 
 class EquipmentFieldsetArray extends React.Component {
 state = { hidden: true};
@@ -22,8 +25,8 @@ render() {
         return (
         <div>
         <label className="equipment-header">
-                <Link className="equipment-btn" onClick={this.hide}>{this.props.equipmentName}</Link>
-                <Link className="equipment-btn" onClick={this.props.remove(index)}>Remove</Link>
+                <EquipmentButton name={this.props.equipmentName} action={this.hide}/>       
+                <RemoveButton action={this.props.remove} index={index} />
         </label>
                 <fieldset className={hidden}>
                 <input 
@@ -71,5 +74,40 @@ render() {
         );
 }
 }
+
+const useStyles = makeStyles(theme => ({
+  button: {
+    margin: theme.spacing(1),
+  },
+  input: {
+    display: 'none',
+  },
+}));
+
+function EquipmentButton({action, name}) {
+        const classes = useStyles();
+        return <Button onClick={action} href="#text-buttons" className={classes.button}>
+                {name}
+                </Button>;       
+}
+
+const removeButtonStyles = makeStyles(theme => ({
+  button: {
+    margin: theme.spacing(1),
+    float: 'right'
+  },
+  input: {
+    display: 'none',
+  },
+}));
+
+function RemoveButton({action, index}) {
+        const classes = removeButtonStyles();
+        return  <Button onClick={action(index)} variant="outlined" color="secondary" className={classes.button}>
+                delete
+                </Button>;
+}
+
+
 
 export default EquipmentFieldsetArray;

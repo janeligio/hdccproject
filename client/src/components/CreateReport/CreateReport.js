@@ -1,8 +1,6 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import axios from 'axios';
 import './CreateReport.css';
-import DatePicker from 'react-datepicker';
 import moment from 'moment';
 import EquipmentFieldset from './EquipmentFieldset';
 import EquipmentFieldsetMultiple from './EquipmentFieldsetMultiple';
@@ -10,6 +8,12 @@ import { Link } from 'react-router-dom';
 
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css'; 
+
+import { makeStyles } from '@material-ui/core/styles';
+import Button from '@material-ui/core/Button';
+import AddIcon from '@material-ui/icons/Add';
+import Fab from '@material-ui/core/Fab';
+import TextField from '@material-ui/core/TextField';
 
 class CreateReport extends React.Component {
 	state = {
@@ -61,22 +65,25 @@ class CreateReport extends React.Component {
 			switches: this.state.switches.filter((item, i) => i !== index)
 		});
 	}
-	handleSubmit = (event) => {
-		event.preventDefault();
+	confirm = (cb) => {
 	    confirmAlert({
-	      title: 'Confirm to submit',
-	      message: 'Are you sure to do this.',
+	      title: 'Confirm',
+	      message: 'Do you want to submit this job report?',
 	      buttons: [
 	        {
 	          label: 'Yes',
-	          onClick: () => alert('Click Yes')
+	          onClick: () => cb()
 	        },
 	        {
 	          label: 'No',
-	          onClick: () => alert('Click No')
+	          onClick: () => false
 	        }
 	      ]
 	    });		
+	}
+	handleSubmit = (event) => {
+		event.preventDefault();
+	
 		const { 
 			site, 
 			circuitId, 
@@ -95,9 +102,11 @@ class CreateReport extends React.Component {
 			switches: switches
 		}
 		console.log(`Form submitted!`);
+		this.confirm(() => {
 		axios.post('/api/reports/create', newData)
 			.then(res => console.log(res))
-			.catch(err => console.log(err));
+			.catch(err => console.log(err));			
+		});
 	}
 	render() {
 		return (
@@ -152,7 +161,7 @@ class CreateReport extends React.Component {
 					}
 				)
 			}
-			<Link onClick={this.addWirelessRouter}>Add a wireless router</Link>
+			<AddButton action={this.addWirelessRouter} name="Add a wireless router"/>
 			{ 
 				this.state.switches.map((item, index) => {
 					let name = `Switch #${index+1}`;
@@ -165,12 +174,42 @@ class CreateReport extends React.Component {
 					}
 				)
 			}
-			<Link onClick={this.addSwitch}>Add another switch</Link>
-			<button type='submit'>Submit</button>
+			<AddButton action={this.addSwitch} name="Add a switch"/>
+			<SubmitButton />
 			</form>
 			</div>
 		);
 	}
 }
 
+const useStyles = makeStyles(theme => ({
+  button: {
+    display: 'block',
+    margin: '1em 0'
+  },
+  input: {
+    display: 'none',
+  },
+}));
+
+function SubmitButton() {
+	const classes = useStyles();
+	return 	<Button type="submit" variant="contained" color="primary" className={classes.button}>
+        	submit
+      		</Button>;
+}
+const addButtonStyles = makeStyles(theme => ({
+  fab: {
+    margin: theme.spacing(1),
+  },
+  extendedIcon: {
+    marginRight: theme.spacing(1),
+  },
+}));
+function AddButton({action, name}) {
+        const classes = addButtonStyles();
+        return  <div><Fab onClick={action} size="small" color="primary" aria-label="Add" className={classes.fab}>
+                <AddIcon />
+                </Fab>{name}</div>
+}
 export default CreateReport;

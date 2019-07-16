@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import moment from 'moment';
 
 const JobSite = (props) => {
-  console.log(props.data);
+  const [hidden, updateHidden] = useState(true);
+
   const wirelessRouters = props.data.wirelessRouters.map((router) => {
     return <Equipment key={router._id} data={router} />
   }); 
@@ -25,7 +26,6 @@ const JobSite = (props) => {
 };
 
 const Equipment = (props) => {
-  console.log(props);
   const { data } = props;
   return ( 
     <div>

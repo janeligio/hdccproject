@@ -19,6 +19,7 @@ class JobSites extends React.Component {
 	      .get('/api/reports')
 	      .then(res => this.setState({jobsites: res.data}))
 	      .catch(err => console.log(err));
+
 	}
 
 

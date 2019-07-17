@@ -1,5 +1,9 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto+Slab&display=swap');
+
 .jobsite {
-	padding: 1em;
+	padding: 3.5em;
+	font-family: 'Roboto Slab', serif;
+
 }
 
 .jobsite:hover {
@@ -7,14 +11,11 @@
 	box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
 }
 
-.btn.edit {
-	color:black;
-	font-size: 1.2em;
-	border-radius: 5px;
-	width: 75px;
+.jobsite-container-2 {
+	display: flex;
 }
-.btn.edit:hover {
-	background-color:black;
-	color:white;
-	transition: 1s;
+
+.jobsite-container-2 > * {
+	flex: 1;
+	padding: 1.5em;
 }

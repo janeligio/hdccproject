@@ -17,9 +17,9 @@ router.get('/', (req, res) => {
 // @route GET api/reports/:id
 // @desc Find a specific report by id
 // @access public
-router.get('/find', (req, res) => {
+router.get('/find/:id', (req, res) => {
 	Report
-		.findById(req.query.id)
+		.findById(req.params.id)
 		.then(report => res.json(report))
 		.catch(err => res.status(404).json({success: false}));
 });

@@ -9,7 +9,6 @@ import JobSites from './components/JobSites/JobSites';
 import CreateReport from './components/CreateReport/CreateReport';
 import SpecificJobSite from './components/SpecificJobSite/SpecificJobSite';
 
-import Navigation from './components/Navigation/Navigation';
 import Drawer from '@material-ui/core/Drawer';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar'

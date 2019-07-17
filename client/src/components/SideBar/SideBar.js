@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import './SideBar.scss';
 import { Link } from 'react-router-dom';
 
+const fontSize = {
+	fontSize: '2em'
+};
 
 const NavigationalLink = (props) => {
 	const [active, toggle] = useState(false);
@@ -10,15 +13,17 @@ const NavigationalLink = (props) => {
 		);
 };
 
+
+
 export default function SideBar(props) {
 	return (
 		  <aside className="sidebar">
-		    <nav className="nav">
+		    <nav style={fontSize} className="nav">
 		      <ul>
-		        <li className="active"><a href="#">Welcome</a></li>
+		        <li className="active"><a>Welcome</a></li>
 		      	<NavigationalLink path="/" title="All Sites" />
 		      	<li><Link to="/create">Create a Report</Link></li>
-		      	{ props.sites.map(site => <NavigationalLink path={`/site/${site._id}`} title={site.name} />)}
+		      	{ props.sites.map(site => <NavigationalLink key={site._id} path={`/site/${site._id}`} title={site.name} />)}
 		      </ul>
 		    </nav>
 		  </aside>	

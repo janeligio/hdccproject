@@ -1,8 +1,9 @@
-@import url('https://fonts.googleapis.com/css?family=Roboto+Slab&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Open+Sans&display=swap');
+
 
 .jobsite {
 	padding: 3.5em;
-	font-family: 'Roboto Slab', serif;
+font-family: 'Open Sans', sans-serif;
 
 }
 

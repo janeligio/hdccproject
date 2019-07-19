@@ -8,6 +8,8 @@ import './App.css';
 import JobSites from './components/JobSites/JobSites';
 import CreateReport from './components/CreateReport/CreateReport';
 import SpecificJobSite from './components/SpecificJobSite/SpecificJobSite';
+import EditReport from './components/EditReport/EditReport';
+import JobSiteNetwork from './components/JobSiteNetwork/JobSiteNetwork';
 
 import Drawer from '@material-ui/core/Drawer';
 import AppBar from '@material-ui/core/AppBar';
@@ -23,47 +25,36 @@ class App extends Component {
       jobsites: []
     };
   }
+  componentDidUpdate(){
+      axios
+        .get('/api/reports')
+        .then(res => this.setState({jobsites: 
+          _.orderBy(res.data, ['name'], ['asc'])}, () => console.log(this.state)))
+        .catch(err => console.log(err));
+  }
   componentDidMount() {
       axios
         .get('/api/reports')
-        .then(res => this.setState({jobsites: res.data}))
+        .then(res => this.setState({jobsites: 
+          _.orderBy(res.data, ['name'], ['asc'])}, () => console.log(this.state)))
         .catch(err => console.log(err));
   }
   render() {
 
      return ( 
       <Router>
-      <SideBar sites={this.state.jobsites}/>
+      <SideBar data={{activePath: window.location.pathname}} sites={this.state.jobsites}/>
       <div style={{marginLeft: '20%'}}>
+        <Route exact path="/network" component={JobSiteNetwork} />
         <Route exact path="/" component={JobSites} />
         <Route exact path="/create" component={CreateReport} />
         <Route exact path="/site/:id" component={SpecificJobSite} />
+        <Route exact path="/edit/:id" component={EditReport} />
       </div>
       </Router>
     );
   }
 }
-
-/*
-    <Router>
-      <Header />
-      <SideBar />
-      <Navigation />
-      <div className="App">
-        <Route exact path="/" component={JobSites} />
-        <Route exact path="/create" component={CreateReport} />
-      </div>
-    </Router>
-*/
-
-const Header = (props) => (
-  <header className="header">
-    <Link to="/"><h2>HDCC Job Sites</h2></Link>
-    <Link to="/create">Create Report</Link>
-  </header>
-);
-
-
 
 
 export default App;

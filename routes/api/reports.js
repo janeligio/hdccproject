@@ -27,7 +27,7 @@ router.get('/find/:id', (req, res) => {
 
 
 // @route POST api/reports/create
-// @desc Put repot into database
+// @desc Put report into database
 // @access Private
 router.post('/create', (req, res) => {
 	const newModem = new Equipment(req.body.modem);
@@ -60,26 +60,42 @@ router.post('/create', (req, res) => {
 // @route POST api/reports/edit:id
 // @desc Update a report
 // @access private
-router.post('/edit', (req, res) => {
+router.post('/edit/:reportId', (req, res) => {
 	// Find report in database
-	console.log(res.query);
-	console.log(res.params);
-	const filter = req.query.id;
-	console.log(filter);
-	const updatedDoc = req.body;
-	Report
-		.updateOne(
-			{_id: filter},
-			{ $set: updatedDoc }
-			)
-		.then(report => res.json(report))
-		.catch(err => res.status(404).json({success:false}));
+	const { reportId } = req.params;
+	
+	const updatedReport = req.body;
+	try {
+		Report
+			.update(
+				{_id: reportId},
+				{ $set: {
+					name: updatedReport.name,
+					date: updatedReport.date,
+					circuitID: updatedReport.circuitID,
+					modem: updatedReport.modem,
+					router: updatedReport.router,
+					wirelessRouters: updatedReport.wirelessRouters,
+					switches: updatedReport.switches,				
+					} 
+				},
+				null,
+				(err, docs) => {
+					console.log(`Successfully Document #${reportId}`);
+					res.json({success:true});
+				}
+			);
+	} catch (err) {
+		res.json({success:false});
+	}
+
 });
 
 // @route DELETE api/reports/delete
 // @desc Put reports into database
 // @access private
 router.delete('/delete', (req, res) => {
+	console.log(req.query.id);
 	Report.findById(req.query.id)
 		.then(report => report
 							.remove()

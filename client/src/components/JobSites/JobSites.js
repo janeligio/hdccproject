@@ -13,13 +13,17 @@ class JobSites extends React.Component {
 			jobsites: []
 		};
 	}
-
+	componentDidUpdate(prevProps) {
+	    axios
+	      .get('/api/reports')
+	      .then(res => this.setState({jobsites: res.data}))
+	      .catch(err => console.log(err));
+	}
 	componentDidMount() {
 	    axios
 	      .get('/api/reports')
 	      .then(res => this.setState({jobsites: res.data}))
 	      .catch(err => console.log(err));
-
 	}
 
 

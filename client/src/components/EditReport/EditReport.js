@@ -1,9 +1,8 @@
 import React from 'react';
 import axios from 'axios';
-import './CreateReport.css';
 import moment from 'moment';
-import EquipmentFieldset from './EquipmentFieldset';
-import EquipmentFieldsetMultiple from './EquipmentFieldsetMultiple';
+import EquipmentFieldset from '../CreateReport/EquipmentFieldset';
+import EquipmentFieldsetMultiple from '../CreateReport/EquipmentFieldsetMultiple';
 import { Link } from 'react-router-dom';
 
 import { confirmAlert } from 'react-confirm-alert';
@@ -14,17 +13,41 @@ import Button from '@material-ui/core/Button';
 import AddIcon from '@material-ui/icons/Add';
 import Fab from '@material-ui/core/Fab';
 import TextField from '@material-ui/core/TextField';
+import DeleteIcon from '@material-ui/icons/Delete';
 
-class CreateReport extends React.Component {
+class EditReport extends React.Component {
 	state = {
-		date: moment(Date.now()),
-		site: '',
-		circuitId: '',
-		modem: {equipmentName: 'modem'},
-		router: {equipmentName: 'router'},
-		wirelessRouters: [],
-		switches: []
+	reportId: '',
+	date: moment(Date.now()),
+	site: '',
+	circuitId: '',
+	modem: {equipmentName: 'modem'},
+	router: {equipmentName: 'router'},
+	wirelessRouters: [],
+	switches: []
+	};
 
+	componentDidMount() {
+		const {id} = this.props.match.params;
+		const url = `/api/reports/find/${id}`;
+		axios
+			.get(url)
+			.then(res => {
+				console.log(res.data);
+				this.setState(
+				{	
+					reportId: id,
+					site: res.data.name,
+					circuitId: res.data.circuitID,
+					modem: res.data.modem,
+					router: res.data.router,
+					wirelessRouters: res.data.wirelessRouters,
+					switches: res.data.switches
+				})
+
+			})
+			.catch(err => console.log(err))
+			;
 	}
 	addWirelessRouter = (event) => {
 		this.setState({wirelessRouters: [...this.state.wirelessRouters, {equipmentName: 'wirelessRouter'} ] } );
@@ -56,19 +79,24 @@ class CreateReport extends React.Component {
 		this.setState({switches: newData});		
 	}
 	removeWireless = (index) => ({target}) => {
-		this.setState({
+		this.confirmDeleteEquipment(() => {
+			this.setState({
 			wirelessRouters: this.state.wirelessRouters.filter((item, i) => i !== index)
-		});
+			});
+		}, "wireless router");
+
 	}
 	removeSwitch = (index) => ({target}) => {
-		this.setState({
-			switches: this.state.switches.filter((item, i) => i !== index)
-		});
+		this.confirmDeleteEquipment(() => {
+			this.setState({
+				switches: this.state.switches.filter((item, i) => i !== index)
+			});
+		}, "switch");
 	}
-	confirm = (cb) => {
+	confirmDeleteEquipment = (cb, equipmentName) => {
 	    confirmAlert({
 	      title: 'Confirm',
-	      message: 'Do you want to submit this job report?',
+	      message: `Are you sure you want to delete this ${equipmentName}?`,
 	      buttons: [
 	        {
 	          label: 'Yes',
@@ -81,9 +109,51 @@ class CreateReport extends React.Component {
 	      ]
 	    });		
 	}
+	confirmDelete = (cb) => {
+	    confirmAlert({
+	      title: 'Confirm',
+	      message: 'Are you sure you want to delete this report from the database?',
+	      buttons: [
+	        {
+	          label: 'Yes',
+	          onClick: () => cb()
+	        },
+	        {
+	          label: 'No',
+	          onClick: () => false
+	        }
+	      ]
+	    });		
+	}
+	confirm = (cb) => {
+	    confirmAlert({
+	      title: 'Confirm',
+	      message: 'Do you want to update this job report?',
+	      buttons: [
+	        {
+	          label: 'Yes',
+	          onClick: () => cb()
+	        },
+	        {
+	          label: 'No',
+	          onClick: () => false
+	        }
+	      ]
+	    });		
+	}
+	handleDelete = (event) => {
+		event.preventDefault();
+		const url = `/api/reports/delete?id=${this.state.reportId}`;
+		this.confirm(() => {
+		axios
+			.delete(url)
+			.then(res => console.log(res))
+			.catch(err => console.log(err));
+			this.props.history.push('/');		
+		});
+	}
 	handleSubmit = (event) => {
 		event.preventDefault();
-	
 		const { 
 			site, 
 			circuitId, 
@@ -100,12 +170,13 @@ class CreateReport extends React.Component {
 			router: router,
 			wirelessRouters: wirelessRouters,
 			switches: switches
-		}
+		};
+		console.log(newData, this.state.reportId);
 		console.log(`Form submitted!`);
 		this.confirm(() => {
-		axios.post('/api/reports/create', newData)
+		axios.post(`/api/reports/edit/${this.state.reportId}`, newData)
 			.then(res => console.log(res))
-			.catch(err => console.log(err));			
+			.catch(err => console.log(err));
 			this.props.history.push('/');		
 		});
 	}
@@ -113,7 +184,7 @@ class CreateReport extends React.Component {
 		return (
 			<div>
 			<form id="create-form-container" noValidate onSubmit={this.handleSubmit}>
-			<h1 className="create-form-header">Create a Report</h1>
+			<h1 className="create-form-header">Edit Report</h1>
 			<fieldset>
 				<label>Name of Jobsite</label>
 			<input 
@@ -131,7 +202,7 @@ class CreateReport extends React.Component {
 			<input 
                 name="date" 
                 value={ this.state.date.format("dddd, MMMM Do YYYY") } 
-                onChange={() => { } } 
+                onChange={ this.handleChange } 
                 placeholder={moment().format("dddd, MMMM Do YYYY")}
                 type="text" 
                 tabIndex="2" 
@@ -148,12 +219,13 @@ class CreateReport extends React.Component {
                 tabIndex="3" 
                 autoFocus/>
 			</fieldset>
-			<EquipmentFieldset data={this.state.modem} handleChange={this.handleModem} equipmentName="Modem" />
-			<EquipmentFieldset data={this.state.router} handleChange={this.handleRouter} equipmentName="Router" />
+			<EquipmentFieldset show={true} data={this.state.modem} handleChange={this.handleModem} equipmentName="Modem" />
+			<EquipmentFieldset show={true} data={this.state.router} handleChange={this.handleRouter} equipmentName="Router" />
 			{ 
 				this.state.wirelessRouters.map((router, index) => {
 					let name = `Wireless Router #${index+1}`;
 					return <EquipmentFieldsetMultiple 
+						show={true}
 						index={index} 
 						data={this.state.wirelessRouters[index]} 
 						handleChange={this.handleWireless} 
@@ -167,6 +239,7 @@ class CreateReport extends React.Component {
 				this.state.switches.map((item, index) => {
 					let name = `Switch #${index+1}`;
 					return <EquipmentFieldsetMultiple
+						show={true}
 						index={index} 
 						equipmentName={name}
 						handleChange={this.handleSwitch}
@@ -176,17 +249,38 @@ class CreateReport extends React.Component {
 				)
 			}
 			<AddButton action={this.addSwitch} name="Add a switch"/>
+			<div style={{display:'flex'}}>
 			<SubmitButton />
+			<DeleteButton action={this.handleDelete}/>
+			</div>
 			</form>
 			</div>
 		);
 	}
 }
+const removeButtonStyles = makeStyles(theme => ({
+  button: {
+    margin: theme.spacing(1),
 
+  },
+  input: {
+    display: 'none',
+  },
+  rightIcon: {
+    marginLeft: theme.spacing(1),
+  },
+}));
+
+const DeleteButton = ({action}) => {
+        const classes = removeButtonStyles();
+        return	<Button onClick={action} variant="contained" color="secondary" className={classes.button}>
+        		delete report
+        		<DeleteIcon className={classes.rightIcon} />
+      		</Button>;
+}
 const useStyles = makeStyles(theme => ({
   button: {
-    display: 'block',
-    margin: '1em 0'
+    margin: theme.spacing(1),
   },
   input: {
     display: 'none',
@@ -196,7 +290,7 @@ const useStyles = makeStyles(theme => ({
 function SubmitButton() {
 	const classes = useStyles();
 	return 	<Button type="submit" variant="contained" color="primary" className={classes.button}>
-        	submit
+        	update report
       		</Button>;
 }
 const addButtonStyles = makeStyles(theme => ({
@@ -213,4 +307,14 @@ function AddButton({action, name}) {
                 <AddIcon />
                 </Fab>{name}</div>
 }
-export default CreateReport;
+
+
+/*
+
+    display: 'block',
+    margin: '1em',
+
+    display: 'block',
+    margin: '1em 0'
+   */
+export default EditReport;

@@ -9,12 +9,17 @@ html {
   position: fixed;
   width: 20%;
   height: 100vh;
-  background: #312450;
+  background: #312450; /* purple */
+  /*  nice black
+  background:   #151515;
+  */
   font-size: 0.55em;
 
+    position: fixed;
     overflow-y: scroll;
     top: 0;
     bottom: 0;
+
   }
 
 .nav {
@@ -23,28 +28,28 @@ html {
   text-align: right;
   top: 50%;
   transform: translateY(-50%);
-  font-weight: bold;
 }
 
 .nav ul {
   list-style: none;
-  
+
   li {
     position: relative;
     margin: 3.2em 0;
     
     a {
-      line-height: 5em;
+      line-height: 3.5em;
       text-transform: uppercase;
       text-decoration: none;
       letter-spacing: 0.4em;
       color: rgba(#FFF, 0.35);
       display: block;
-      transition: all ease-out 300ms;
+      transition: all ease-out 100ms;
     }
     
     &.active a {
       color: white;
+      font-weight: bold;
     }
     
     &:not(.active)::after {
@@ -68,35 +73,9 @@ html {
   }
 }
 
-.twitter {
-  position: relative;
-  width: 75%;
-  float: right;
-  height: 100vh;
-  
-  .container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
-  }
-  
-  a {
-    position: relative;
-    
-    img {
-      width: 48px;
-      height: 48px;
-    }
-  }
-  
-  p {
-    text-transform: uppercase;
-    font-size: 1em;
-    letter-spacing: 0.1em;
-    color: #FFF;
-    font-weight: bold;
-    margin-top: 20px;
-  }
+/* Target the header */
+
+.nav ul li#sidebar-header::after {
+  background: none;
+  background-image: none;
 }

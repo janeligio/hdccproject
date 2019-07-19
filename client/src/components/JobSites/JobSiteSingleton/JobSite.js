@@ -5,7 +5,7 @@ import Button from '@material-ui/core/Button';
 import AddIcon from '@material-ui/icons/Add';
 import Fab from '@material-ui/core/Fab';
 import TextField from '@material-ui/core/TextField';
-
+import { Redirect, Link } from 'react-router-dom';
 
 const JobSite = (props) => {
   const [hidden, updateHidden] = useState(true);
@@ -14,11 +14,11 @@ const JobSite = (props) => {
   }); 
   const switches = props.data.switches.map((switchInstance) => {
     return <Equipment key={switchInstance._id} data={switchInstance} />
-  }); 
+  });
   return(
     <div className="jobsite">
       <div className="jobsite-container-1">
-        <h2>{props.data.name}</h2>
+        <h2><Link style={{textDecoration:'none',color:'black'}} to={`/site/${props.data._id}`}>{props.data.name}</Link></h2>
         <p><b>Report created:</b> {moment(props.data.date).format("dddd, MMMM Do YYYY, hA")}</p>
         <p><b>Circuit ID:</b> {props.data.circuitID}</p> 
       </div>
@@ -29,10 +29,7 @@ const JobSite = (props) => {
         { wirelessRouters }
         { switches }
       </div>
-
-
-
-      <EditButton/>
+      <EditButton reportId={props.data._id}/>
     </div>
     );
 };
@@ -76,10 +73,10 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-function EditButton() {
+function EditButton(props) {
   const classes = useStyles();
-  return  <Button type="submit" variant="contained" color="primary" className={classes.button}>
+  return  <Link style={{textDecoration: 'none'}} to={`/edit/${props.reportId}`}> <Button type="submit" variant="contained" color="primary" className={classes.button}>
           edit
-          </Button>;
+          </Button></Link>;
 }
 export default JobSite;

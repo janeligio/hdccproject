@@ -6,7 +6,7 @@ import Button from '@material-ui/core/Button';
 
 
 class EquipmentFieldsetArray extends React.Component {
-state = { hidden: true};
+state = { hidden: !this.props.show};
 
 hide = (event) => {
         event.preventDefault();
@@ -22,6 +22,7 @@ render() {
                 'btn-show': this.state.hidden === true
         });
         const { index } = this.props;
+        const { brand, model, location, description, notes} = this.props.data;
         return (
         <div>
         <label className="equipment-header">
@@ -31,7 +32,7 @@ render() {
                 <fieldset className={hidden}>
                 <input 
                 name="brand" 
-                value={ this.props.brand } 
+                value={ brand } 
                 placeholder="Brand" 
                 type="text" 
                 tabIndex="3" 
@@ -39,7 +40,7 @@ render() {
                 onChange={this.props.handleChange(index)}/>
                 <input 
                 name="model" 
-                value={ this.props.model }
+                value={ model }
                 placeholder="Model" 
                 type="text" 
                 tabIndex="3" 
@@ -47,7 +48,7 @@ render() {
                 autoFocus/>
                 <input 
                 name="description" 
-                value={ this.state.circuitId } 
+                value={ description } 
                 onChange={this.props.handleChange(index)}                 
                 placeholder="Description" 
                 type="text" 
@@ -55,7 +56,7 @@ render() {
                 autoFocus/>
                 <input 
                 name="location" 
-                value={ this.state.circuitId } 
+                value={ location } 
                 onChange={this.props.handleChange(index)}                                  
                 placeholder="Location" 
                 type="text" 
@@ -63,7 +64,7 @@ render() {
                 autoFocus/>
                 <input 
                 name="notes" 
-                value={ this.state.circuitId } 
+                value={ notes } 
                 onChange={this.props.handleChange(index)}                                                   
                 placeholder="Ports" 
                 type="text" 

@@ -21,6 +21,7 @@ const JobSite = (props) => {
         <h2><Link style={{textDecoration:'none',color:'black'}} to={`/site/${props.data._id}`}>{props.data.name}</Link></h2>
         <p><b>Report created:</b> {moment(props.data.date).format("dddd, MMMM Do YYYY, hA")}</p>
         <p><b>Circuit ID:</b> {props.data.circuitID}</p> 
+        <p><b>Subnet:</b> {props.data.subnet}</p> 
       </div>
       <h3>Equipment</h3>
       <div className="jobsite-container-2">

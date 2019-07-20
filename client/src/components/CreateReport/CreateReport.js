@@ -20,6 +20,7 @@ class CreateReport extends React.Component {
 		date: moment(Date.now()),
 		site: '',
 		circuitId: '',
+		subnet: '',
 		modem: {equipmentName: 'modem'},
 		router: {equipmentName: 'router'},
 		wirelessRouters: [],
@@ -86,7 +87,8 @@ class CreateReport extends React.Component {
 	
 		const { 
 			site, 
-			circuitId, 
+			circuitId,
+			subnet, 
 			modem, 
 			router, 
 			wirelessRouters, 
@@ -95,6 +97,7 @@ class CreateReport extends React.Component {
 		const newData = {
 			name: site,
 			date: dateObj,
+			subnet: subnet,
 			circuitID: circuitId,
 			modem: modem,
 			router: router,
@@ -142,6 +145,17 @@ class CreateReport extends React.Component {
 			<input 
                 name="circuitId" 
                 value={ this.state.circuitId } 
+                onChange={ this.handleChange } 
+                placeholder="required" 
+                type="text" 
+                tabIndex="3" 
+                autoFocus/>
+			</fieldset>
+			<fieldset>
+				<label>Subnet</label>
+			<input 
+                name="subnet" 
+                value={ this.state.subnet } 
                 onChange={ this.handleChange } 
                 placeholder="required" 
                 type="text" 

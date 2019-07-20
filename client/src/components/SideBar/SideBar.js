@@ -22,10 +22,14 @@ export default function SideBar(props) {
 		    <nav style={fontSize} className="nav">
 		      <ul>
 		        <li id="sidebar-header" className="active"><a>HDCC Job Sites</a></li>
-		      	<NavigationalLink  path="/" title="All Sites" />
-		      	<NavigationalLink  path="/create" title="Create a Report" />
-		      	<NavigationalLink  path="/network" title="Network" />
-		      	{ props.sites.map(site => <NavigationalLink key={site._id} path={`/site/${site._id}`} title={site.name} />)}
+		        {[
+		        	{path:'/',title:'Welcome',},
+		        	{path:'/network',title:'Network',},
+		        	{path:'/create',title:'Create a Report',},
+		        	{path:'/all',title:'All Sites',},
+		        	]
+		        	.map(link => (<NavigationalLink path={`${link.path}`} title={`${link.title}`}/>)) 
+		        }
 		      </ul>
 		    </nav>
 		  </aside>	

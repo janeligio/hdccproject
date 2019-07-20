@@ -5,6 +5,7 @@ import moment from 'moment';
 import _ from 'lodash';
 import './App.css';
 
+import LandingPage from './components/LandingPage/LandingPage';
 import JobSites from './components/JobSites/JobSites';
 import CreateReport from './components/CreateReport/CreateReport';
 import SpecificJobSite from './components/SpecificJobSite/SpecificJobSite';
@@ -22,15 +23,19 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      jobsites: []
+      jobsites: [],
+
     };
   }
-  componentDidUpdate(){
+
+  componentDidUpdate(prevProps){
+    if(this.state.jobsites !== prevProps.jobsites){
       axios
         .get('/api/reports')
         .then(res => this.setState({jobsites: 
-          _.orderBy(res.data, ['name'], ['asc'])}, () => console.log(this.state)))
+          _.orderBy(res.data, ['name'], ['asc'])}))
         .catch(err => console.log(err));
+      }
   }
   componentDidMount() {
       axios
@@ -45,9 +50,10 @@ class App extends Component {
       <Router>
       <SideBar data={{activePath: window.location.pathname}} sites={this.state.jobsites}/>
       <div style={{marginLeft: '20%'}}>
-        <Route exact path="/network" component={JobSiteNetwork} />
-        <Route exact path="/" component={JobSites} />
+        <Route exact path="/" component={LandingPage} />
+        <Route exact path="/all" component={JobSites} />
         <Route exact path="/create" component={CreateReport} />
+        <Route exact path="/network" render={(props) => <JobSiteNetwork {...props} sort={this.updateArrayOrder}jobsites={this.state.jobsites}/>} />
         <Route exact path="/site/:id" component={SpecificJobSite} />
         <Route exact path="/edit/:id" component={EditReport} />
       </div>

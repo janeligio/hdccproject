@@ -21,6 +21,7 @@ class EditReport extends React.Component {
 	date: moment(Date.now()),
 	site: '',
 	circuitId: '',
+	subnet: '',
 	modem: {equipmentName: 'modem'},
 	router: {equipmentName: 'router'},
 	wirelessRouters: [],
@@ -39,6 +40,7 @@ class EditReport extends React.Component {
 					reportId: id,
 					site: res.data.name,
 					circuitId: res.data.circuitID,
+					subnet: res.data.subnet,
 					modem: res.data.modem,
 					router: res.data.router,
 					wirelessRouters: res.data.wirelessRouters,
@@ -144,7 +146,7 @@ class EditReport extends React.Component {
 	handleDelete = (event) => {
 		event.preventDefault();
 		const url = `/api/reports/delete?id=${this.state.reportId}`;
-		this.confirm(() => {
+		this.confirmDelete(() => {
 		axios
 			.delete(url)
 			.then(res => console.log(res))
@@ -156,7 +158,8 @@ class EditReport extends React.Component {
 		event.preventDefault();
 		const { 
 			site, 
-			circuitId, 
+			circuitId,
+			subnet, 
 			modem, 
 			router, 
 			wirelessRouters, 
@@ -166,6 +169,7 @@ class EditReport extends React.Component {
 			name: site,
 			date: dateObj,
 			circuitID: circuitId,
+			subnet: subnet,
 			modem: modem,
 			router: router,
 			wirelessRouters: wirelessRouters,
@@ -177,7 +181,7 @@ class EditReport extends React.Component {
 		axios.post(`/api/reports/edit/${this.state.reportId}`, newData)
 			.then(res => console.log(res))
 			.catch(err => console.log(err));
-			this.props.history.push('/');		
+			this.props.history.push('/network');		
 		});
 	}
 	render() {
@@ -213,6 +217,17 @@ class EditReport extends React.Component {
 			<input 
                 name="circuitId" 
                 value={ this.state.circuitId } 
+                onChange={ this.handleChange } 
+                placeholder="required" 
+                type="text" 
+                tabIndex="3" 
+                autoFocus/>
+			</fieldset>
+			<fieldset>
+				<label>Subnet</label>
+			<input 
+                name="subnet" 
+                value={ this.state.subnet } 
                 onChange={ this.handleChange } 
                 placeholder="required" 
                 type="text" 
@@ -308,13 +323,4 @@ function AddButton({action, name}) {
                 </Fab>{name}</div>
 }
 
-
-/*
-
-    display: 'block',
-    margin: '1em',
-
-    display: 'block',
-    margin: '1em 0'
-   */
 export default EditReport;

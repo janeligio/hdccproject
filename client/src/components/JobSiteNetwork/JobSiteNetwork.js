@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -16,6 +16,7 @@ import axios from 'axios';
 import { Link, Redirect } from 'react-router-dom';
 import EditIcon from '@material-ui/icons/Edit';
 import _ from 'lodash';
+import ReactToPrint from 'react-to-print';
 
 import './JobSiteNetwork.css';
 
@@ -57,6 +58,12 @@ function EquipmentButton({path, name}) {
         return <Button href="#text-buttons" className={classes.button}>
                 <Link style={{textDecoration:'none',color:'black'}} to={path}>{name}</Link>
                 </Button>;       
+}
+function SortButton({action, name}) {
+        const classes = equipmentStyles();
+        return <a onClick={action} style={{textDecoration:'none',color:'rgba(0, 0, 0, 0.54)'}} href="#text-buttons" className={classes.button}>
+                {name}
+                </a>;       
 }
 const confirmDelete = (cb) => {
 	    confirmAlert({
@@ -114,6 +121,8 @@ const Row = (props) => (
 export default function JobSiteNetwork(props) {
 	const [redirect, setRedirect] = useState(false);
 	const [fieldToSortBy, setField] = useState(['name', 'asc']);
+	const componentRef = useRef();
+
 	function handleSort(field) {
 		let ascOrDesc;
 		if(field === fieldToSortBy[0]) {
@@ -134,16 +143,20 @@ export default function JobSiteNetwork(props) {
 	return (
 		<Paper className={classes.root}>
 			{redirect ? <Redirect to="/network"/> : null}
-			<Table className={classes.table}>
+			<ReactToPrint
+				trigger={() => <button>Print</button>}
+				content={() => componentRef.current}
+				/>
+			<Table ref={componentRef} className={classes.table}>
 				<TableHead>
 					<TableRow>
-						<TableCell>Job Site
+						<TableCell><SortButton name="Job Site" action={() => handleSort('name')}/>
 						<TableSortLabel 
 							onClick={() => handleSort('name')}
 							active={fieldToSortBy[0] === 'name' ? true : false}
 							direction={fieldToSortBy[1]}
 							></TableSortLabel></TableCell>
-						<TableCell>Subnet
+						<TableCell><SortButton name="Subnet" action={() => handleSort('subnet')}/>
 						<TableSortLabel 
 							onClick={() => handleSort('subnet')}
 							active={fieldToSortBy[0] === 'subnet' ? true : false}

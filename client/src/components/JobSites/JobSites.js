@@ -4,6 +4,7 @@ import axios from 'axios';
 import moment from 'moment';
 import './JobSites.css';
 import JobSite from './JobSiteSingleton/JobSite';
+import ReactToPrint from 'react-to-print';
 
 
 class JobSites extends React.Component {
@@ -30,9 +31,19 @@ class JobSites extends React.Component {
 	render() {
 
 		return (
-        this.state.jobsites.map(jobsite => (
-          <JobSite data={jobsite} />
-            ))
+		<div>
+			<ReactToPrint
+	          trigger={() => <a href="#">Print this out!</a>}
+	          content={() => this.componentRef}
+	        />
+			<div ref={el => (this.componentRef = el)}>
+	        {
+	        	this.state.jobsites.map(jobsite => (
+	          		<JobSite data={jobsite} />
+	            ))
+	    	}
+	    	</div>
+    	</div>
       );
 	}
 }

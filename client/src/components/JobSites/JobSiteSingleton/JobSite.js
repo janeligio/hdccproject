@@ -6,6 +6,12 @@ import AddIcon from '@material-ui/icons/Add';
 import Fab from '@material-ui/core/Fab';
 import TextField from '@material-ui/core/TextField';
 import { Redirect, Link } from 'react-router-dom';
+import axios from 'axios';
+import FileDownload from 'js-file-download';
+
+  function downloadReport(id) {
+    axios.get(`api/reports/download/${id}`).then(res => FileDownload(res.data, 'report.csv'));
+  }
 
 const JobSite = (props) => {
   const [hidden, updateHidden] = useState(true);
@@ -79,5 +85,11 @@ function EditButton(props) {
   return  <Link style={{textDecoration: 'none'}} to={`/edit/${props.reportId}`}> <Button type="submit" variant="contained" color="primary" className={classes.button}>
           edit
           </Button></Link>;
+}
+function DownloadButton({action}) {
+  const classes = useStyles();
+  return <Button onClick={action} type="submit" variant="contained" color="primary" className={classes.button}>
+          download
+          </Button>;
 }
 export default JobSite;

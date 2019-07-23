@@ -112,7 +112,7 @@ const rowStyle = {
 const Row = (props) => (
 	<TableRow className={`site-row ${(props.index+1)%2 === 0 ? 'network-even' : 'network-odd'} `}>
 		<TableCell><EquipmentButton path={`/site/${props.data._id}`} name={props.data.name}/></TableCell>
-		<TableCell>{props.data.subnet || 100}</TableCell>
+		<TableCell>{props.data.subnet || `none`}</TableCell>
 		<TableCell><DeleteButton {...props} action={handleDelete(props.data._id, props.setRedirect)}/></TableCell>
 		<TableCell><Link to={`/edit/${props.data._id}`}><EditButton/></Link></TableCell>
 	</TableRow>

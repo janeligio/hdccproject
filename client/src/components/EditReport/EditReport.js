@@ -3,7 +3,7 @@ import axios from 'axios';
 import moment from 'moment';
 import EquipmentFieldset from '../CreateReport/EquipmentFieldset';
 import EquipmentFieldsetMultiple from '../CreateReport/EquipmentFieldsetMultiple';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css'; 
@@ -29,6 +29,7 @@ class EditReport extends React.Component {
 	};
 
 	componentDidMount() {
+		console.log(this.props);
 		const {id} = this.props.match.params;
 		const url = `/api/reports/find/${id}`;
 		axios
@@ -167,7 +168,7 @@ class EditReport extends React.Component {
 		const dateObj = this.state.date.toDate();
 		const newData = {
 			name: site,
-			date: dateObj,
+			lastUpdated: dateObj,
 			circuitID: circuitId,
 			subnet: subnet,
 			modem: modem,
@@ -268,6 +269,7 @@ class EditReport extends React.Component {
 			<SubmitButton />
 			<DeleteButton action={this.handleDelete}/>
 			</div>
+			<CancelButton action={() => this.props.history.goBack()} />
 			</form>
 			</div>
 		);
@@ -288,7 +290,7 @@ const removeButtonStyles = makeStyles(theme => ({
 
 const DeleteButton = ({action}) => {
         const classes = removeButtonStyles();
-        return	<Button onClick={action} variant="contained" color="secondary" className={classes.button}>
+        return	<Button onClick={action} size="small" variant="contained" color="secondary" className={classes.button}>
         		delete report
         		<DeleteIcon className={classes.rightIcon} />
       		</Button>;
@@ -304,7 +306,7 @@ const useStyles = makeStyles(theme => ({
 
 function SubmitButton() {
 	const classes = useStyles();
-	return 	<Button type="submit" variant="contained" color="primary" className={classes.button}>
+	return 	<Button type="submit" size="small" variant="contained" color="primary" className={classes.button}>
         	update report
       		</Button>;
 }
@@ -319,8 +321,15 @@ const addButtonStyles = makeStyles(theme => ({
 function AddButton({action, name}) {
         const classes = addButtonStyles();
         return  <div><Fab onClick={action} size="small" color="primary" aria-label="Add" className={classes.fab}>
-                <AddIcon />
+                <AddIcon size="small" />
                 </Fab>{name}</div>
 }
-
-export default EditReport;
+function CancelButton({action}) {
+	const classes = useStyles()
+	return (
+      <Button onClick={action} color="secondary" size="small" className={classes.button}>
+        cancel
+      </Button>
+	);
+}
+export default withRouter(EditReport);

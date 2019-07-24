@@ -3,7 +3,7 @@ import { Link } from  'react-router-dom';
 import axios from 'axios';
 import moment from 'moment';
 import './JobSites.css';
-import JobSite from './JobSiteSingleton/JobSite';
+import JobSiteCard from './JobSiteSingleton/JobSiteCard';
 import ReactToPrint from 'react-to-print';
 
 
@@ -39,7 +39,7 @@ class JobSites extends React.Component {
 			<div ref={el => (this.componentRef = el)}>
 	        {
 	        	this.state.jobsites.map(jobsite => (
-	          		<JobSite data={jobsite} />
+	          		<JobSiteCard data={jobsite} />
 	            ))
 	    	}
 	    	</div>

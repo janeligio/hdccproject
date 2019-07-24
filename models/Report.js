@@ -17,6 +17,9 @@ const ReportSchema = new Schema({
 		type: Date,
 		default: Date.now
 	},
+	lastUpdated: {
+		type: Date,
+	},
 	circuitID: {type: String, default: ''},
 	subnet: {type: String, default: '000'},
 	modem: EquipmentSchema,

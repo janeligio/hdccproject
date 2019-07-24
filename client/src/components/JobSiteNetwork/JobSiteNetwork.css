@@ -3,14 +3,15 @@
 }
 .network-odd:hover{
 	background: #BBB;
-	transition: .5s;
+	transition: 0s;
 	box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
 }
 .network-even:hover{
 	background: #BBB;
-	transition: .5s;
+	transition: 0s;
 	box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
 }
+
 .site-row:hover {
 /*	background: #DDD;
 	transition: .5s;

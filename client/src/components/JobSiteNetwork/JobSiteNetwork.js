@@ -107,7 +107,8 @@ const EditButton = ({path}) => {
 	);
 };
 const rowStyle = {
-	backgroundColor: 'black'
+	backgroundColor: 'black',
+	height: '50px',
 };
 const Row = (props) => (
 	<TableRow className={`site-row ${(props.index+1)%2 === 0 ? 'network-even' : 'network-odd'} `}>

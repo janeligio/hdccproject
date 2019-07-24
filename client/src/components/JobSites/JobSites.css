@@ -2,9 +2,9 @@
 
 
 .jobsite {
+	margin: 1em 3em;
 	padding: 3.5em;
-font-family: 'Open Sans', sans-serif;
-
+	font-family: 'Open Sans', sans-serif;
 }
 
 .jobsite:hover {
@@ -12,11 +12,18 @@ font-family: 'Open Sans', sans-serif;
 	box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
 }
 
-.jobsite-container-2 {
-	display: flex;
+.jobsite-container-1 > *{
+	margin: 0;
 }
 
+.jobsite-container-2 {
+	line-height: 1em;
+/*	display: flex;
+*/}
+
 .jobsite-container-2 > * {
-	flex: 1;
-	padding: 1.5em;
-}
+/*	flex: 1;
+*/	
+/*padding: 1em;
+*/}
+

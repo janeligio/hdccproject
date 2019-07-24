@@ -118,12 +118,12 @@ router.post('/create', (req, res) => {
 	const newModem = new Equipment(req.body.modem);
 	const newRouter = new Equipment(req.body.router);
 	const newWirelessRouters = 
-		req.body.wirelessRouters.length != 0 
+		req.body.wirelessRouters.length !== 0 
 		? _.map(req.body.wirelessRouters, 
 			router => (new Equipment(router)))
 		: [];
 	const newSwitches = 
-		req.body.switches.length != 0
+		req.body.switches.length !== 0
 		? _.map(req.body.switches, 
 			switchInstance => (new Equipment(switchInstance)))
 		: [];
@@ -131,6 +131,7 @@ router.post('/create', (req, res) => {
 	const newReport = new Report({
 		name: req.body.name,
 		date: req.body.date,
+		lastUpdated: req.body.date,
 		circuitID: req.body.circuitID,
 		subnet: req.body.subnet,
 		modem: newModem,
@@ -157,7 +158,7 @@ router.post('/edit/:reportId', (req, res) => {
 				{_id: reportId},
 				{ $set: {
 					name: updatedReport.name,
-					date: updatedReport.date,
+					lastUpdated: updatedReport.lastUpdated,
 					circuitID: updatedReport.circuitID,
 					subnet: updatedReport.subnet,
 					modem: updatedReport.modem,

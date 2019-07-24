@@ -45,17 +45,19 @@ class App extends Component {
         .catch(err => console.log(err));
   }
   render() {
-
+     const mainPageStyle = {
+      marginLeft: '20%',
+     }
      return ( 
       <Router>
       <SideBar data={{activePath: window.location.pathname}} sites={this.state.jobsites}/>
-      <div style={{marginLeft: '20%'}}>
+      <div style={mainPageStyle}>
         <Route exact path="/" component={LandingPage} />
         <Route exact path="/all" component={JobSites} />
         <Route exact path="/create" component={CreateReport} />
         <Route exact path="/network" render={(props) => <JobSiteNetwork {...props} sort={this.updateArrayOrder}jobsites={this.state.jobsites}/>} />
         <Route exact path="/site/:id" component={SpecificJobSite} />
-        <Route exact path="/edit/:id" component={EditReport} />
+        <Route exact path="/edit/:id" render={(props) => <EditReport {...props}/> }/>
       </div>
       </Router>
     );

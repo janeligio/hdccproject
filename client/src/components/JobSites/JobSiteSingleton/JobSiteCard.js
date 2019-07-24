@@ -13,44 +13,58 @@ import FileDownload from 'js-file-download';
     axios.get(`api/reports/download/${id}`).then(res => FileDownload(res.data, 'report.csv'));
   }
 
-const JobSite = (props) => {
+const JobSiteCard = (props) => {
   const [hidden, updateHidden] = useState(true);
   const { wirelessRouters, switches } = props.data;
   let wirelessRoutersEl, switchesEl;
-  let hasEquipment = false;
+  const hasModem = props.data.modem.brand ? true : false;
+  const hasRouter = props.data.router.brand ? true : false;
+  let hasWireless, hasSwitch;
   if(wirelessRouters.length !== 0 && wirelessRouters[0].brand !== "") {
-    wirelessRoutersEl = wirelessRouters.map((router) => {
-    return <Equipment key={router._id} data={router} />
-    }); 
-    hasEquipment = true;
+    hasWireless = [true, wirelessRouters.length];
+  } else { 
+    hasWireless = [false, 0];
+  }
+  if(switches.length !== 0 && switches[0].brand !== "") {
+    hasSwitch = [true, switches.length];
+  } else { 
+    hasSwitch = [false, 0];
+  }
+  let message;
+  if(!hasModem && !hasRouter && !hasWireless[0] && !hasSwitch[0]) {
+    message = 'No equipment.';
+  } else if (hasModem && hasRouter && hasWireless[0] && hasSwitch[0]) {
+    message = `Has a modem, router, ${hasWireless[1]} wireless router${hasWireless[1]>1?'s':''}, and ${hasSwitch[1]} switch${hasSwitch[1]>1?'es':''}.`;
+  } else {
+    // message = `Has 
+    // ${hasModem ? 'a modem':''}
+    // ${!hasWireless[0] && !hasSwitch ? ' and ':', '}
+    // ${hasRouter?'a router': ''} 
+    // ${!hasSwitch[0] ? ' and ':', '}
+    // ${hasWireless[0]?`${hasWireless[1]} router `:''}
+
+    // .` 
+    message = `Has a ${hasModem?'-modem ':''}
+    ${hasRouter?'-router ':''}
+    ${hasWireless[0]?`-${hasWireless[1]} wireless router${hasWireless[1].length>1?'s':''}`:''}
+    ${hasSwitch[0]?`-${hasSwitch[1]} switch${hasSwitch[1].length>1?'es':''}`:''}
+
+    `
   }
 
-  if(switches.length !== 0 && switches[0].brand !== "") {
-    switchesEl = switches.map((switchInstance) => {
-    return <Equipment key={switchInstance._id} data={switchInstance} />
-    }); 
-    hasEquipment = true;
-  }
-  if(props.data.modem.brand || props.data.router.brand) {
-    hasEquipment = true;
-  }
   return(
     <div className="jobsite">
       <div className="jobsite-container-1">
         <h2><Link style={{textDecoration:'none',color:'black'}} to={`/site/${props.data._id}`}>{props.data.name}</Link></h2>
         <p><b>Report created:</b> {moment(props.data.date).format("MMMM Do YYYY, h:mm A, ddd")}</p>
-        {props.data.date === props.data.lastUpdated ? null : `Last Updated: ${moment(props.data.lastUpdated).format("MMMM Do YYYY, h:mm A, ddd")}`}
-        <p><b>Circuit ID:</b> {props.data.circuitID || `n/a`}</p> 
-        <p><b>Subnet:</b> {props.data.subnet || `n/a`}</p> 
+        <p><b>Last updated:</b> Not implemented</p>
+        <p><b>Circuit ID:</b> {props.data.circuitID}</p> 
+        <p><b>Subnet:</b> {props.data.subnet}</p> 
       </div>
-      <h3>{hasEquipment ? `` : `No equipment.`}</h3>
-      <div className="jobsite-container-2">
-        {props.data.modem.brand ? <Equipment data={props.data.modem} /> : null }
-        { props.data.router.brand ? <Equipment data={props.data.router} /> : null}
-        { wirelessRoutersEl }
-        { switchesEl }
-      </div>
-      <EditButton reportId={props.data._id}/>
+      <h3>
+      { message }
+
+      </h3>
     </div>
     );
 };
@@ -110,4 +124,4 @@ function DownloadButton({action}) {
           download
           </Button>;
 }
-export default JobSite;
+export default JobSiteCard;

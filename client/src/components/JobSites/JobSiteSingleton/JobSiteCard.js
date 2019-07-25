@@ -1,20 +1,39 @@
-import React, { useState } from 'react';
-import moment from 'moment';
+import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
+import Card from '@material-ui/core/Card';
+import CardActions from '@material-ui/core/CardActions';
+import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
-import AddIcon from '@material-ui/icons/Add';
-import Fab from '@material-ui/core/Fab';
-import TextField from '@material-ui/core/TextField';
-import { Redirect, Link } from 'react-router-dom';
-import axios from 'axios';
-import FileDownload from 'js-file-download';
+import Typography from '@material-ui/core/Typography';
 
-  function downloadReport(id) {
-    axios.get(`api/reports/download/${id}`).then(res => FileDownload(res.data, 'report.csv'));
-  }
+import moment from 'moment';
+import { Link } from 'react-router-dom';
 
-const JobSiteCard = (props) => {
-  const [hidden, updateHidden] = useState(true);
+const useStyles = makeStyles(theme => ({
+  card: {
+    minWidth: 200,
+    width: 300,
+    height: 240,
+    margin: '1em',
+  },
+  bullet: {
+    display: 'inline-block',
+    margin: '0 2px',
+    transform: 'scale(0.8)',
+  },
+  title: {
+    fontSize: 14,
+  },
+  pos: {
+    marginBottom: 12,
+  },
+  button: {
+    margin: theme.spacing(1),
+  },
+}));
+
+export default function SimpleCard(props) {
+  const classes = useStyles();
   const { wirelessRouters, switches } = props.data;
   let wirelessRoutersEl, switchesEl;
   const hasModem = props.data.modem.brand ? true : false;
@@ -51,77 +70,37 @@ const JobSiteCard = (props) => {
 
     `
   }
-
-  return(
-    <div className="jobsite-card">
-      <div className="jobsite-card-container-1">
-        <h2><Link style={{textDecoration:'none',color:'black'}} to={`/site/${props.data._id}`}>{props.data.name}</Link></h2>
-        <p><b>Report created:</b> {moment(props.data.date).format("MMMM Do YYYY, h:mm A, ddd")}</p>
-        <p><b>Last updated:</b> Not implemented</p>
-        <p><b>Circuit ID:</b> {props.data.circuitID}</p> 
-        <p><b>Subnet:</b> {props.data.subnet}</p> 
-      </div>
-      <h3>
-      { message }
-
-      </h3>
-    </div>
-    );
-};
-
-const Equipment = (props) => {
-  const { data } = props;
-  let equipmentName;
-  switch(data.equipmentName) {
-    case "modem":
-    equipmentName = "Modem";
-    break;
-    case "router":
-    equipmentName = "Router";
-    break;
-    case "wirelessRouter":
-    equipmentName = "Wireless Router";
-    break;
-    case "switch":
-    equipmentName = "Switch";
-    break;
-    default:
-    break;
-  }
-  return ( 
-    <div>
-      <h4>{equipmentName} - {data.brand} {data.model}</h4>
-      <p>{data.description}</p>
-      <p>Location - {data.location}</p>
-      <p>Notes: {data.notes}</p>
-    </div>
+  return (
+    <Card className="jobsite-card" className={classes.card}>
+      <CardContent>
+        <Typography className={classes.title} color="textSecondary" gutterBottom>
+          Subnet: {props.data.subnet || `none`}
+        </Typography>
+        <Typography variant="h5" component="h2">
+          {props.data.name}
+        </Typography>
+        <Typography className={classes.pos} color="textSecondary">
+          {moment(props.data.date).format("MMMM Do YYYY")} 
+          <br />
+        <Typography style={{fontSize:'0.7em'}} className={classes.pos} color="textSecondary">
+          {props.data.lastUpdated 
+            ? `Updated: ${moment(props.data.lastUpdated).format("MMMM Do YYYY")}`
+            : ``
+          }
+          </Typography>
+        </Typography>
+        <Typography variant="body2" component="p">
+                { message }
+        </Typography>
+      </CardContent>
+      <CardActions> 
+        <Button color="primary" href={`/site/${props.data._id}`} classes={classes.button} size="small">View</Button>
+      </CardActions>
+    </Card>
   );
-};
-
-const useStyles = makeStyles(theme => ({
-  button: {
-    display: 'block',
-    margin: '1em 0'
-  },
-  input: {
-    display: 'none',
-  },
-}));
-
-function EditButton(props) {
-  const classes = useStyles();
-  return  <Button 
-            variant="contained" 
-            color="primary" 
-            className={classes.button}>
-            <Link style={{textDecoration: 'none', color:'white'}} to={`/edit/${props.reportId}`}> 
-          edit
-          </Link></Button>;
 }
-function DownloadButton({action}) {
-  const classes = useStyles();
-  return <Button onClick={action} type="submit" variant="contained" color="primary" className={classes.button}>
-          download
-          </Button>;
-}
-export default JobSiteCard;
+
+const JobSiteLink = React.forwardRef((props, ref) => (
+    <Link innerRef={ref} to={`/site/${props.data_id}`} {...props} />
+  )
+);

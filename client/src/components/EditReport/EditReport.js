@@ -182,7 +182,7 @@ class EditReport extends React.Component {
 		axios.post(`/api/reports/edit/${this.state.reportId}`, newData)
 			.then(res => console.log(res))
 			.catch(err => console.log(err));
-			this.props.history.push('/network');		
+			this.props.history.push(`/site/${this.state.reportId}`);		
 		});
 	}
 	render() {

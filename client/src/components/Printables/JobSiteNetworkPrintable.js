@@ -18,11 +18,12 @@ import EditIcon from '@material-ui/icons/Edit';
 import _ from 'lodash';
 import ReactToPrint from 'react-to-print';
 
-import './JobSiteNetwork.css';
+import '../JobSiteNetwork/JobSiteNetwork.css';
 
 const useStyles = makeStyles(theme => ({
   root: {
     width: '100%',
+    marginTop: theme.spacing(3),
     overflowX: 'auto',
   },
    button: {
@@ -116,8 +117,6 @@ const Row = (props) => (
 	<TableRow className={`site-row ${(props.index+1)%2 === 0 ? 'network-even' : 'network-odd'} `}>
 		<TableCell><EquipmentButton path={`/site/${props.data._id}`} name={props.data.name}/></TableCell>
 		<TableCell>{props.data.subnet || `none`}</TableCell>
-		<TableCell><Link to={`/edit/${props.data._id}`}><EditButton/></Link></TableCell>
-		<TableCell><DeleteButton {...props} action={handleDelete(props.data._id, props.setRedirect)}/></TableCell>
 	</TableRow>
 );
 
@@ -148,24 +147,6 @@ export default function JobSiteNetwork(props) {
 			{redirect ? <Redirect to="/network"/> : null}
 
 			<Table className={classes.table}>
-				<TableHead>
-					<TableRow>
-						<TableCell><SortButton name="Job Site" action={() => handleSort('name')}/>
-						<TableSortLabel 
-							onClick={() => handleSort('name')}
-							active={fieldToSortBy[0] === 'name' ? true : false}
-							direction={fieldToSortBy[1]}
-							></TableSortLabel></TableCell>
-						<TableCell><SortButton name="Subnet" action={() => handleSort('subnet')}/>
-						<TableSortLabel 
-							onClick={() => handleSort('subnet')}
-							active={fieldToSortBy[0] === 'subnet' ? true : false}
-							direction={fieldToSortBy[1]}
-							></TableSortLabel></TableCell>
-						<TableCell>Edit</TableCell>
-						<TableCell>Delete</TableCell>
-					</TableRow>
-				</TableHead>
 
 				<TableBody>
 					{

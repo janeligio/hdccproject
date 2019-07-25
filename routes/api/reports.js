@@ -131,7 +131,7 @@ router.post('/create', (req, res) => {
 	const newReport = new Report({
 		name: req.body.name,
 		date: req.body.date,
-		lastUpdated: req.body.date,
+		lastUpdated: null,
 		circuitID: req.body.circuitID,
 		subnet: req.body.subnet,
 		modem: newModem,

@@ -52,10 +52,10 @@ class App extends Component {
       <Router>
       <SideBar data={{activePath: window.location.pathname}} sites={this.state.jobsites}/>
       <div style={mainPageStyle}>
-        <Route exact path="/" component={LandingPage} />
-        <Route exact path="/all" component={JobSites} />
+        <Route exact path="/" render={(props) => <LandingPage jobsites={this.state.jobsites} {...props} /> } />
+        <Route exact path="/all" render={(props) => <JobSites jobsites={this.state.jobsites} {...props}/>} />
         <Route exact path="/create" component={CreateReport} />
-        <Route exact path="/network" render={(props) => <JobSiteNetwork {...props} sort={this.updateArrayOrder}jobsites={this.state.jobsites}/>} />
+        <Route exact path="/network" render={(props) => <JobSiteNetwork {...props} jobsites={this.state.jobsites}/>} />
         <Route exact path="/site/:id" component={SpecificJobSite} />
         <Route exact path="/edit/:id" render={(props) => <EditReport {...props}/> }/>
       </div>

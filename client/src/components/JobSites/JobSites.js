@@ -3,8 +3,7 @@ import { Link } from  'react-router-dom';
 import axios from 'axios';
 import moment from 'moment';
 import './JobSites.css';
-import JobSiteCard from './JobSiteSingleton/JobSiteCard';
-import Temp from './JobSiteSingleton/Temp';
+import JobSiteGrid from './JobSiteSingleton/JobSiteGrid';
 import ReactToPrint from 'react-to-print';
 
 
@@ -16,23 +15,23 @@ class JobSites extends React.Component {
 		};
 	}
 	componentDidUpdate(prevProps) {
-	    axios
-	      .get('/api/reports')
-	      .then(res => this.setState({jobsites: res.data}))
-	      .catch(err => console.log(err));
+	    // axios
+	    //   .get('/api/reports')
+	    //   .then(res => this.setState({jobsites: res.data}))
+	    //   .catch(err => console.log(err));
 	}
 	componentDidMount() {
-	    axios
-	      .get('/api/reports')
-	      .then(res => this.setState({jobsites: res.data}))
-	      .catch(err => console.log(err));
+	    // axios
+	    //   .get('/api/reports')
+	    //   .then(res => this.setState({jobsites: res.data}))
+	    //   .catch(err => console.log(err));
 	}
 
 
 	render() {
 
 		return (
-	    	<Temp sites={this.state.jobsites}/>
+	    	<JobSiteGrid sites={this.props.jobsites}/>
       );
 	}
 }

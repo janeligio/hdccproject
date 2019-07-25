@@ -23,7 +23,7 @@ export default function SideBar(props) {
 		      <ul>
 		        <li id="sidebar-header" className="active"><a>HDCC Job Sites</a></li>
 		        {[
-		        	{path:'/',title:'Welcome',},
+		        	{path:'/',title:'Home',},
 		        	{path:'/network',title:'Network',},
 		        	{path:'/create',title:'Create a Report',},
 		        	{path:'/all',title:'All Sites',},

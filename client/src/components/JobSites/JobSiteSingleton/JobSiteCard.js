@@ -53,8 +53,8 @@ const JobSiteCard = (props) => {
   }
 
   return(
-    <div className="jobsite">
-      <div className="jobsite-container-1">
+    <div className="jobsite-card">
+      <div className="jobsite-card-container-1">
         <h2><Link style={{textDecoration:'none',color:'black'}} to={`/site/${props.data._id}`}>{props.data.name}</Link></h2>
         <p><b>Report created:</b> {moment(props.data.date).format("MMMM Do YYYY, h:mm A, ddd")}</p>
         <p><b>Last updated:</b> Not implemented</p>

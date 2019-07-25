@@ -32,6 +32,6 @@ export default function LandingPage() {
 	return <div>
 
 		<h1>Welcome!</h1>
-		<SubmitButton action={downloadReports} name={`Download All reports`}/>
+		<SubmitButton action={downloadReports} name={`Generate csv`}/>
 		</div>
 }

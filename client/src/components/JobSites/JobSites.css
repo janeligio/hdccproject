@@ -27,3 +27,13 @@
 /*padding: 1em;
 */}
 
+
+.jobsite-card {
+	border: 1px solid black;
+	height: 420px;
+	width: 300px;
+	margin: 1em;
+	padding: 2.5em;
+	font-family: 'Open Sans', sans-serif;	
+}
+

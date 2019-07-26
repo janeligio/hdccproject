@@ -29,7 +29,8 @@ const useStyles = makeStyles(theme => ({
 function SubmitButton({action, name, color}) {
 	const classes = useStyles();
 	return 	<Button 
-				style={{backgroundColor: color}}
+				style={{backgroundColor: color,
+				}}
 				onClick={action} 
 				variant="contained" 
 				color="primary"
@@ -75,42 +76,21 @@ export default function LandingPage(props) {
       </Typography>
 
       <Container maxWidth="xl" className={classes.root}>
-	      <Typography style={{marginTop:'2em'}} variant="overline" display="block" gutterBottom>
-	        Generate CSV file of all job sites
-	      </Typography>
+      	<div style={{display:'flex'}}>
+
+
 	      <SubmitButton color={`#008000`} action={downloadReports} name={`Generate csv`}/>
-	      <Typography variant="overline" display="block" gutterBottom>
-	        Get printable version of job site network page
-	      </Typography>
 	      <ReactToPrint
 	        trigger={() => <button style={hideButtonStyle}><SubmitButton name={`print network`}/></button>}
 	        content={() => networkPageRef.current}
 	      />
-	      <Typography variant="overline" display="block" gutterBottom>
-	        get printable version of a specific job site
-	      </Typography>
-	      <SubmitButton action={downloadReports} name={`print job site`}/>
-	      <Typography variant="overline" display="block" gutterBottom>
-	        get printable version of all job sites
-	      </Typography>
-	      <SubmitButton action={downloadReports} name={`print all job sites`}/>
-	  
+	  	</div>
+      <div style={{display:'none'}}>
+      	<div ref={networkPageRef}>
+	      <JobSiteNetworkPrintable jobsites={props.jobsites} />
+      	</div>
+      </div>
 
-      <div style={{display:'none'}}>
-      	<div ref={networkPageRef}>
-	      <JobSiteNetworkPrintable jobsites={props.jobsites} />
-      	</div>
-      </div>
-      <div>
-      	<div ref={jobsitePageRef}>
-			{jobsiteNotFound ? null : <JobSite data={props.jobsites[0]}/> }
-      	</div>
-      </div>
-      <div style={{display:'none'}}>
-      	<div ref={networkPageRef}>
-	      <JobSiteNetworkPrintable jobsites={props.jobsites} />
-      	</div>
-      </div>
 	  </Container>
 	</Container>
 	);

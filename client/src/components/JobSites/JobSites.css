@@ -36,4 +36,7 @@
 	padding: 2.5em;
 	font-family: 'Open Sans', sans-serif;	
 }
-
+.MuiFormControl-root.radio-container {
+	width: 200px;
+	margin: 25px 0 0 10px;
+}

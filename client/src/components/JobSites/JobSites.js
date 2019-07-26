@@ -5,7 +5,7 @@ import moment from 'moment';
 import './JobSites.css';
 import JobSiteGrid from './JobSiteSingleton/JobSiteGrid';
 import ReactToPrint from 'react-to-print';
-
+import JobSite from './JobSiteSingleton/JobSite';
 
 class JobSites extends React.Component {
 	constructor(props) {
@@ -27,11 +27,18 @@ class JobSites extends React.Component {
 	    //   .catch(err => console.log(err));
 	}
 
-
+	grid() {
+		return	<JobSiteGrid sites={this.props.jobsites}/>;
+	}
+	sites() {
+		return this.props.jobsites.map(site => (
+			<JobSite key={site._id} data={site}/>
+			));
+	}
 	render() {
 
 		return (
-	    	<JobSiteGrid sites={this.props.jobsites}/>
+			<div>{this.grid()}</div>  	
       );
 	}
 }

@@ -14,6 +14,7 @@ import AddIcon from '@material-ui/icons/Add';
 import Fab from '@material-ui/core/Fab';
 import TextField from '@material-ui/core/TextField';
 import DeleteIcon from '@material-ui/icons/Delete';
+import Typography from '@material-ui/core/Typography';
 
 class EditReport extends React.Component {
 	state = {
@@ -29,8 +30,7 @@ class EditReport extends React.Component {
 	};
 
 	componentDidMount() {
-		console.log(this.props);
-		const {id} = this.props.match.params;
+		const { id } = this.props.match.params;
 		const url = `/api/reports/find/${id}`;
 		axios
 			.get(url)
@@ -49,7 +49,10 @@ class EditReport extends React.Component {
 				})
 
 			})
-			.catch(err => console.log(err))
+			.catch(err => {
+				console.log(err);
+				this.setState({notFound: true});
+			})
 			;
 	}
 	addWirelessRouter = (event) => {
@@ -157,37 +160,40 @@ class EditReport extends React.Component {
 	}
 	handleSubmit = (event) => {
 		event.preventDefault();
-		const { 
-			site, 
-			circuitId,
-			subnet, 
-			modem, 
-			router, 
-			wirelessRouters, 
-			switches } = this.state;
-		const dateObj = this.state.date.toDate();
-		const newData = {
-			name: site,
-			lastUpdated: dateObj,
-			circuitID: circuitId,
-			subnet: subnet,
-			modem: modem,
-			router: router,
-			wirelessRouters: wirelessRouters,
-			switches: switches
-		};
-		console.log(newData, this.state.reportId);
-		console.log(`Form submitted!`);
-		this.confirm(() => {
-		axios.post(`/api/reports/edit/${this.state.reportId}`, newData)
-			.then(res => console.log(res))
-			.catch(err => console.log(err));
-			this.props.history.push(`/site/${this.state.reportId}`);		
-		});
+		if(!this.state.notFound) {
+			const { 
+				site, 
+				circuitId,
+				subnet, 
+				modem, 
+				router, 
+				wirelessRouters, 
+				switches } = this.state;
+			const dateObj = this.state.date.toDate();
+			const newData = {
+				name: site,
+				lastUpdated: dateObj,
+				circuitID: circuitId,
+				subnet: subnet,
+				modem: modem,
+				router: router,
+				wirelessRouters: wirelessRouters,
+				switches: switches
+			};
+			console.log(newData, this.state.reportId);
+			console.log(`Form submitted!`);
+			this.confirm(() => {
+			axios.post(`/api/reports/edit/${this.state.reportId}`, newData)
+				.then(res => console.log(res))
+				.catch(err => console.log(err));
+				this.props.history.push(`/site/${this.state.reportId}`);		
+			});
+		}
 	}
 	render() {
 		return (
 			<div>
+			{ this.state.notFound ? <NotFoundPage /> : null }
 			<form id="create-form-container" noValidate onSubmit={this.handleSubmit}>
 			<h1 className="create-form-header">Edit Report</h1>
 			<fieldset>
@@ -331,5 +337,14 @@ function CancelButton({action}) {
         cancel
       </Button>
 	);
+}
+function NotFoundPage(props) {
+  const classes = useStyles();
+
+  return (
+        <Typography style={{
+        	padding: '0.5em',
+        }} variant="h3" component="h1">404 Not Found</Typography>
+  	);
 }
 export default withRouter(EditReport);

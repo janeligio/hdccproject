@@ -90,7 +90,7 @@ export default function SimpleCard(props) {
           </Typography>
         </Typography>
         <Typography variant="body2" component="p">
-                { message }
+          { message }
         </Typography>
       </CardContent>
       <CardActions> 

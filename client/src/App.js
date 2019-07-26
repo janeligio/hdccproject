@@ -40,8 +40,10 @@ class App extends Component {
   componentDidMount() {
       axios
         .get('/api/reports')
-        .then(res => this.setState({jobsites: 
-          _.orderBy(res.data, ['name'], ['asc'])}, () => console.log(this.state)))
+        .then(res => this.setState({
+          jobsites: _.orderBy(res.data, ['name'], ['asc'])
+          })
+        )
         .catch(err => console.log(err));
   }
   render() {
@@ -56,7 +58,7 @@ class App extends Component {
         <Route exact path="/all" render={(props) => <JobSites jobsites={this.state.jobsites} {...props}/>} />
         <Route exact path="/create" component={CreateReport} />
         <Route exact path="/network" render={(props) => <JobSiteNetwork {...props} jobsites={this.state.jobsites}/>} />
-        <Route exact path="/site/:id" component={SpecificJobSite} />
+        <Route exact path="/site/:id" render={(props) => <SpecificJobSite {...props} jobsites={this.state.jobsites}/>} />
         <Route exact path="/edit/:id" render={(props) => <EditReport {...props}/> }/>
       </div>
       </Router>

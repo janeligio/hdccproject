@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import moment from 'moment';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
@@ -13,32 +13,35 @@ import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
-
-  function downloadReport(id) {
-    axios.get(`api/reports/download/${id}`).then(res => FileDownload(res.data, 'report.csv'));
-  }
+import ReactToPrint from 'react-to-print';
 
 const JobSite = (props) => {
   const [hidden, updateHidden] = useState(true);
-  const { wirelessRouters, switches } = props.data;
+  const [ref, setNetworkRef] = React.useState(useRef());
   let wirelessRoutersEl, switchesEl;
   let hasEquipment = false;
-  if(wirelessRouters.length !== 0 && wirelessRouters[0].brand !== "") {
-    wirelessRoutersEl = wirelessRouters.map((router) => {
-    return <Equipment key={router._id} data={router} />
-    }); 
-    hasEquipment = true;
+  try {
+    if(props.data.wirelessRouters.length !== 0 && props.data.wirelessRouters[0].brand !== "") {
+      wirelessRoutersEl = props.data.wirelessRouters.map((router) => {
+      return <Equipment key={router._id} data={router} />
+      }); 
+      hasEquipment = true;
+    }   
+
+    if(props.data.switches.length !== 0 && props.data.switches[0].brand !== "") {
+      switchesEl = props.data.switches.map((switchInstance) => {
+      return <Equipment key={switchInstance._id} data={switchInstance} />
+      }); 
+      hasEquipment = true;
+    }
+    if(props.data.modem.brand || props.data.router.brand) {
+      hasEquipment = true;
+    }
+  } catch (err) {
+    console.log(err);
   }
 
-  if(switches.length !== 0 && switches[0].brand !== "") {
-    switchesEl = switches.map((switchInstance) => {
-    return <Equipment key={switchInstance._id} data={switchInstance} />
-    }); 
-    hasEquipment = true;
-  }
-  if(props.data.modem.brand || props.data.router.brand) {
-    hasEquipment = true;
-  }
+
   const classes = useStyles();
   const equipmentMessage = !hasEquipment 
   ? <Typography 
@@ -51,7 +54,7 @@ const JobSite = (props) => {
   ;
 
   return(
-    <Paper elevation={5} className={classes.root}>
+    <Paper ref={ref} elevation={5} className={classes.root}>
     <div>
       <div>
         <Typography variant="h3" component="h1">{props.data.name}</Typography>
@@ -81,9 +84,14 @@ const JobSite = (props) => {
               { switchesEl }
           </Grid>
         </Grid>
-      </Grid>     
-
-      <EditButton reportId={props.data._id}/>
+      </Grid>
+      <div style={{display: 'flex'}}>
+        <EditButton reportId={props.data._id}/>
+        <ReactToPrint
+          trigger={() => <button style={hideButtonStyle}><SubmitButton color="green" name={`print`}/></button>}
+          content={() => ref.current}
+        />
+      </div>
      </div>
      </Paper>
     );
@@ -155,6 +163,12 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
+const hideButtonStyle = {
+  backgroundColor: 'white',
+  border: 'none',
+  padding: 0,
+  margin: '0 0 0 5px'
+};
 
 function EditButton(props) {
   const classes = useStyles();
@@ -170,6 +184,17 @@ function DownloadButton({action}) {
   const classes = useStyles();
   return <Button onClick={action} type="submit" variant="contained" color="primary" className={classes.button}>
           download
+          </Button>;
+}
+function SubmitButton({action, name, color}) {
+  const classes = useStyles();
+  return  <Button 
+        style={{backgroundColor: color, width: 80}}
+        onClick={action} 
+        variant="contained" 
+        color="primary"
+        className={classes.button}>
+      {name}
           </Button>;
 }
 export default JobSite;

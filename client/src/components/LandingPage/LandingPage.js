@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
@@ -12,6 +12,7 @@ import Container from '@material-ui/core/Container';
 import FileDownload from 'js-file-download';
 import ReactToPrint from 'react-to-print';
 import JobSiteNetworkPrintable from '../Printables/JobSiteNetworkPrintable';
+import JobSite from '../JobSites/JobSiteSingleton/JobSite';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -48,7 +49,19 @@ export default function LandingPage(props) {
 	function downloadReports() {
 		axios.get('api/reports/download/all').then(res => FileDownload(res.data, 'reports.csv'));
 	}
-	const [networkPageRef, setComponentref] = React.useState(useRef());
+	const [networkPageRef, setNetworkRef] = React.useState(useRef());
+	const [jobsitePageRef, setSiteRef] = React.useState(useRef());
+	const [allJobsitePageRef, setAllJobsitesRef] = React.useState(useRef());
+
+	const [jobsiteNotFound, setJobsiteNotFound] = React.useState(true);
+	const [jobsite, setJobsite] = React.useState({
+				name: '',
+				wirelessRouters: [],
+				switches: [],
+				equipmentName: '',
+				modem: {},
+				router: {}
+			});
 	const classes = useStyles();
 	return ( 
 	<Container 
@@ -85,7 +98,17 @@ export default function LandingPage(props) {
 
       <div style={{display:'none'}}>
       	<div ref={networkPageRef}>
-	      <JobSiteNetworkPrintable  jobsites={props.jobsites} />
+	      <JobSiteNetworkPrintable jobsites={props.jobsites} />
+      	</div>
+      </div>
+      <div>
+      	<div ref={jobsitePageRef}>
+			{jobsiteNotFound ? null : <JobSite data={props.jobsites[0]}/> }
+      	</div>
+      </div>
+      <div style={{display:'none'}}>
+      	<div ref={networkPageRef}>
+	      <JobSiteNetworkPrintable jobsites={props.jobsites} />
       	</div>
       </div>
 	  </Container>

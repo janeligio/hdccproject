@@ -13,6 +13,7 @@ import FileDownload from 'js-file-download';
 import ReactToPrint from 'react-to-print';
 import JobSiteNetworkPrintable from '../Printables/JobSiteNetworkPrintable';
 import JobSite from '../JobSites/JobSiteSingleton/JobSite';
+import KOIP from './KOIP';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -77,14 +78,15 @@ export default function LandingPage(props) {
 
       <Container maxWidth="xl" className={classes.root}>
       	<div style={{display:'flex'}}>
-
-
 	      <SubmitButton color={`#008000`} action={downloadReports} name={`Generate csv`}/>
 	      <ReactToPrint
 	        trigger={() => <button style={hideButtonStyle}><SubmitButton name={`print network`}/></button>}
 	        content={() => networkPageRef.current}
 	      />
 	  	</div>
+
+	  	<KOIP/>
+
       <div style={{display:'none'}}>
       	<div ref={networkPageRef}>
 	      <JobSiteNetworkPrintable jobsites={props.jobsites} />

@@ -5,9 +5,7 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
-
 import moment from 'moment';
-import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles(theme => ({
   card: {
@@ -35,7 +33,6 @@ const useStyles = makeStyles(theme => ({
 export default function SimpleCard(props) {
   const classes = useStyles();
   const { wirelessRouters, switches } = props.data;
-  let wirelessRoutersEl, switchesEl;
   const hasModem = props.data.modem.brand ? true : false;
   const hasRouter = props.data.router.brand ? true : false;
   let hasWireless, hasSwitch;
@@ -71,7 +68,7 @@ export default function SimpleCard(props) {
     `
   }
   return (
-    <Card className="jobsite-card" className={classes.card}>
+    <Card className={classes.card}>
       <CardContent>
         <Typography className={classes.title} color="textSecondary" gutterBottom>
           Subnet: {props.data.subnet || `none`}
@@ -99,8 +96,3 @@ export default function SimpleCard(props) {
     </Card>
   );
 }
-
-const JobSiteLink = React.forwardRef((props, ref) => (
-    <Link innerRef={ref} to={`/site/${props.data_id}`} {...props} />
-  )
-);

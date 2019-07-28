@@ -1,4 +1,4 @@
-import React, { useState, useRef} from 'react';
+import React, { useState} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -10,13 +10,11 @@ import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { confirmAlert } from 'react-confirm-alert';
-import Icon from '@material-ui/core/Icon';
 import Fab from '@material-ui/core/Fab';
 import axios from 'axios';
 import { Link, Redirect } from 'react-router-dom';
 import EditIcon from '@material-ui/icons/Edit';
 import _ from 'lodash';
-import ReactToPrint from 'react-to-print';
 
 import './JobSiteNetwork.css';
 
@@ -100,6 +98,7 @@ const DeleteButton = ({action}) => {
         			<DeleteIcon className={classes.rightIcon} />
       			</Button>;
 };
+
 const EditButton = ({path}) => {
   const classes = useStyles();
 	return (
@@ -108,10 +107,7 @@ const EditButton = ({path}) => {
       </Fab>
 	);
 };
-const rowStyle = {
-	backgroundColor: 'black',
-	height: '50px',
-};
+
 const Row = (props) => (
 	<TableRow className={`site-row ${(props.index+1)%2 === 0 ? 'network-even' : 'network-odd'} `}>
 		<TableCell><EquipmentButton path={`/site/${props.data._id}`} name={props.data.name}/></TableCell>
@@ -124,7 +120,6 @@ const Row = (props) => (
 export default function JobSiteNetwork(props) {
 	const [redirect, setRedirect] = useState(false);
 	const [fieldToSortBy, setField] = useState(['name', 'asc']);
-	const componentRef = useRef();
 
 	function handleSort(field) {
 		let ascOrDesc;

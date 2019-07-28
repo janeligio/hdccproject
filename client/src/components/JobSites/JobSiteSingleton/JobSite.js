@@ -1,13 +1,7 @@
-import React, { useState, useRef } from 'react';
+import React, { useRef } from 'react';
 import moment from 'moment';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
-import AddIcon from '@material-ui/icons/Add';
-import Fab from '@material-ui/core/Fab';
-import TextField from '@material-ui/core/TextField';
-import { Redirect, Link } from 'react-router-dom';
-import axios from 'axios';
-import FileDownload from 'js-file-download';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
@@ -16,8 +10,7 @@ import CardContent from '@material-ui/core/CardContent';
 import ReactToPrint from 'react-to-print';
 
 const JobSite = (props) => {
-  const [hidden, updateHidden] = useState(true);
-  const [ref, setNetworkRef] = React.useState(useRef());
+  const [ref] = React.useState(useRef());
   let wirelessRoutersEl, switchesEl;
   let hasEquipment = false;
   try {
@@ -180,12 +173,7 @@ function EditButton(props) {
           edit
           </Button>;
 }
-function DownloadButton({action}) {
-  const classes = useStyles();
-  return <Button onClick={action} type="submit" variant="contained" color="primary" className={classes.button}>
-          download
-          </Button>;
-}
+
 function SubmitButton({action, name, color}) {
   const classes = useStyles();
   return  <Button 

@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import axios from 'axios';
 import JobSite from '../JobSites/JobSiteSingleton/JobSite';
-import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 
 class SpecificJobSite extends React.Component {

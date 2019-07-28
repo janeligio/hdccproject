@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './SideBar.scss';
-import { Link } from 'react-router-dom';
 import { NavLink } from 'react-router-dom';
 
 const fontSize = {
@@ -8,7 +7,6 @@ const fontSize = {
 };
 
 const NavigationalLink = (props) => {
-	const [active, toggle] = useState(false);
 	return (
 		<li className={props.path === window.location.pathname ? "active" : ""}><NavLink onClick={() => console.log(props.data)} exact to={`${props.path}`} activeClassName="active">{props.title}</NavLink></li>
 		);

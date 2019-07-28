@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
-import moment from 'moment';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 import _ from 'lodash';
 import './App.css';
 
@@ -11,11 +10,6 @@ import CreateReport from './components/CreateReport/CreateReport';
 import SpecificJobSite from './components/SpecificJobSite/SpecificJobSite';
 import EditReport from './components/EditReport/EditReport';
 import JobSiteNetwork from './components/JobSiteNetwork/JobSiteNetwork';
-
-import Drawer from '@material-ui/core/Drawer';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar'
-import Typography from '@material-ui/core/Typography';
 
 import SideBar from './components/SideBar/SideBar';
 

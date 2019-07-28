@@ -1,7 +1,4 @@
 import React, { useEffect, useRef } from 'react';
-import { Link } from  'react-router-dom';
-import axios from 'axios';
-import moment from 'moment';
 import './JobSites.css';
 import JobSiteGrid from './JobSiteSingleton/JobSiteGrid';
 import ReactToPrint from 'react-to-print';
@@ -42,7 +39,7 @@ export default function JobSites(props) {
   const [filteredSites, setFilteredSites] = React.useState([]);
   const [filter, setFilter] = React.useState('');
   const [value, setValue] = React.useState('card');
-  const [ref, setRef] = React.useState(useRef());
+  const [ref] = React.useState(useRef());
 
   useEffect(() => {
     setJobsites(props.jobsites);

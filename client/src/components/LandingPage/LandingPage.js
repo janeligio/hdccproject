@@ -1,10 +1,7 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useRef } from 'react';
 
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
-import AddIcon from '@material-ui/icons/Add';
-import Fab from '@material-ui/core/Fab';
-import TextField from '@material-ui/core/TextField';
 import axios from 'axios';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
@@ -12,7 +9,6 @@ import Container from '@material-ui/core/Container';
 import FileDownload from 'js-file-download';
 import ReactToPrint from 'react-to-print';
 import JobSiteNetworkPrintable from '../Printables/JobSiteNetworkPrintable';
-import JobSite from '../JobSites/JobSiteSingleton/JobSite';
 import KOIP from './KOIP';
 
 const useStyles = makeStyles(theme => ({
@@ -51,19 +47,7 @@ export default function LandingPage(props) {
 	function downloadReports() {
 		axios.get('api/reports/download/all').then(res => FileDownload(res.data, 'reports.csv'));
 	}
-	const [networkPageRef, setNetworkRef] = React.useState(useRef());
-	const [jobsitePageRef, setSiteRef] = React.useState(useRef());
-	const [allJobsitePageRef, setAllJobsitesRef] = React.useState(useRef());
-
-	const [jobsiteNotFound, setJobsiteNotFound] = React.useState(true);
-	const [jobsite, setJobsite] = React.useState({
-				name: '',
-				wirelessRouters: [],
-				switches: [],
-				equipmentName: '',
-				modem: {},
-				router: {}
-			});
+	const [networkPageRef] = React.useState(useRef());
 	const classes = useStyles();
 	return ( 
 	<Container 

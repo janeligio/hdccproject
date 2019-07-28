@@ -3,7 +3,7 @@ import axios from 'axios';
 import moment from 'moment';
 import EquipmentFieldset from '../CreateReport/EquipmentFieldset';
 import EquipmentFieldsetMultiple from '../CreateReport/EquipmentFieldsetMultiple';
-import { Link, withRouter } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css'; 
@@ -12,7 +12,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import AddIcon from '@material-ui/icons/Add';
 import Fab from '@material-ui/core/Fab';
-import TextField from '@material-ui/core/TextField';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Typography from '@material-ui/core/Typography';
 
@@ -339,8 +338,6 @@ function CancelButton({action}) {
 	);
 }
 function NotFoundPage(props) {
-  const classes = useStyles();
-
   return (
         <Typography style={{
         	padding: '0.5em',

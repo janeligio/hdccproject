@@ -4,7 +4,6 @@ import './CreateReport.css';
 import moment from 'moment';
 import EquipmentFieldset from './EquipmentFieldset';
 import EquipmentFieldsetMultiple from './EquipmentFieldsetMultiple';
-import { Link } from 'react-router-dom';
 
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css'; 
@@ -13,7 +12,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import AddIcon from '@material-ui/icons/Add';
 import Fab from '@material-ui/core/Fab';
-import TextField from '@material-ui/core/TextField';
 
 class CreateReport extends React.Component {
 	state = {

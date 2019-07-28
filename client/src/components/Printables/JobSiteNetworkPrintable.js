@@ -1,22 +1,13 @@
-import React, { useState, useRef} from 'react';
+import React, { useState} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import TableSortLabel from '@material-ui/core/TableSortLabel';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
-import DeleteIcon from '@material-ui/icons/Delete';
-import { confirmAlert } from 'react-confirm-alert';
-import Icon from '@material-ui/core/Icon';
-import Fab from '@material-ui/core/Fab';
-import axios from 'axios';
 import { Link, Redirect } from 'react-router-dom';
-import EditIcon from '@material-ui/icons/Edit';
 import _ from 'lodash';
-import ReactToPrint from 'react-to-print';
 
 import '../JobSiteNetwork/JobSiteNetwork.css';
 
@@ -36,16 +27,6 @@ const useStyles = makeStyles(theme => ({
     margin: theme.spacing(1),
   },
 }));
-const removeButtonStyles = makeStyles(theme => ({
-  button: {
-    margin: theme.spacing(1),
-  },
-  input: {
-    display: 'none',
-  },
-  rightIcon: {
-  },
-}));
 
 const equipmentStyles = makeStyles(theme => ({
   button: {
@@ -62,57 +43,7 @@ function EquipmentButton({path, name}) {
                 <Link style={{textDecoration:'none',color:'black'}} to={path}>{name}</Link>
                 </Button>;       
 }
-function SortButton({action, name}) {
-        const classes = equipmentStyles();
-        return <a onClick={action} style={{textDecoration:'none',color:'rgba(0, 0, 0, 0.54)'}} href="#text-buttons" className={classes.button}>
-                {name}
-                </a>;       
-}
-const confirmDelete = (cb) => {
-	    confirmAlert({
-	      title: 'Confirm',
-	      message: 'Are you sure you want to delete this report from the database?',
-	      buttons: [
-	        {
-	          label: 'Yes',
-	          onClick: () => cb()
-	        },
-	        {
-	          label: 'No',
-	          onClick: () => false
-	        }
-	      ]
-	    });		
-}
-const handleDelete = (reportId, setRedirect) => (event) => {
-		event.preventDefault();
-		const url = `/api/reports/delete?id=${reportId}`;
-		confirmDelete(() => {
-		axios
-			.delete(url)
-			.then(res => console.log(res))
-			.then(setRedirect(true))
-			.catch(err => console.log(err));		
-		});
-};
-const DeleteButton = ({action}) => {
-        const classes = removeButtonStyles();
-        return	<Button onClick={action} variant="contained" color="secondary" className={classes.button}>
-        			<DeleteIcon className={classes.rightIcon} />
-      			</Button>;
-};
-const EditButton = ({path}) => {
-  const classes = useStyles();
-	return (
-      <Fab color="primary" aria-label="Edit" className={classes.fab}>
-        <EditIcon>edit_icon</EditIcon>
-      </Fab>
-	);
-};
-const rowStyle = {
-	backgroundColor: 'black',
-	height: '50px',
-};
+
 const Row = (props) => (
 	<TableRow className={`site-row ${(props.index+1)%2 === 0 ? 'network-even' : 'network-odd'} `}>
 		<TableCell><EquipmentButton path={`/site/${props.data._id}`} name={props.data.name}/></TableCell>
@@ -122,19 +53,8 @@ const Row = (props) => (
 
 export default function JobSiteNetwork(props) {
 	const [redirect, setRedirect] = useState(false);
-	const [fieldToSortBy, setField] = useState(['name', 'asc']);
-	const componentRef = useRef();
+	const [fieldToSortBy] = useState(['name', 'asc']);
 
-	function handleSort(field) {
-		let ascOrDesc;
-		if(field === fieldToSortBy[0]) {
-			ascOrDesc = fieldToSortBy[1] === 'asc' ? 'desc' : 'asc';
-			setField([field, ascOrDesc]);
-		} else {
-			ascOrDesc = 'asc';
-			setField([field, ascOrDesc]);
-		}
-	}
 	function convertSubnetToInt(site) {
 		let obj = site;
 		const subnetAsInt = parseInt(site.subnet);

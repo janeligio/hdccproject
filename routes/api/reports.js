@@ -158,6 +158,7 @@ router.post('/edit/:reportId', (req, res) => {
 				{_id: reportId},
 				{ $set: {
 					name: updatedReport.name,
+					date: updatedReport.date,
 					lastUpdated: updatedReport.lastUpdated,
 					circuitID: updatedReport.circuitID,
 					subnet: updatedReport.subnet,

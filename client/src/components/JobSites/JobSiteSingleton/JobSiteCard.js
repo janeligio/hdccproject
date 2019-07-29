@@ -91,7 +91,7 @@ export default function SimpleCard(props) {
         </Typography>
       </CardContent>
       <CardActions> 
-        <Button color="primary" href={`/site/${props.data._id}`} classes={classes.button} size="small">View</Button>
+        <Button color="primary" href={`/site/${props.data._id}`} className={classes.button} size="small">View</Button>
       </CardActions>
     </Card>
   );

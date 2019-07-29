@@ -19,14 +19,14 @@ export default function SideBar(props) {
 		  <aside className="sidebar">
 		    <nav style={fontSize} className="nav">
 		      <ul>
-		        <li id="sidebar-header" className="active"><a>HDCC Job Sites</a></li>
+		        <li id="sidebar-header" className="active"><a id="sidebar-header-button" href="/">HDCC Job Sites</a></li>
 		        {[
 		        	{path:'/',title:'Home',},
 		        	{path:'/network',title:'Network',},
-		        	{path:'/create',title:'Create a Report',},
+		        	{path:'/create',title:'Create',},
 		        	{path:'/all',title:'All Sites',},
 		        	]
-		        	.map(link => (<NavigationalLink path={`${link.path}`} title={`${link.title}`}/>)) 
+		        	.map(link => (<NavigationalLink key={link.path} path={`${link.path}`} title={`${link.title}`}/>)) 
 		        }
 		      </ul>
 		    </nav>

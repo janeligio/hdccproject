@@ -55,13 +55,13 @@ const equipmentStyles = makeStyles(theme => ({
 
 function EquipmentButton({path, name}) {
         const classes = equipmentStyles();
-        return <Button href="#text-buttons" className={classes.button}>
+        return <Button href="#text-button" className={classes.button}>
                 <Link style={{textDecoration:'none',color:'black'}} to={path}>{name}</Link>
                 </Button>;       
 }
 function SortButton({action, name}) {
         const classes = equipmentStyles();
-        return <a onClick={action} style={{textDecoration:'none',color:'rgba(0, 0, 0, 0.54)'}} href="#text-buttons" className={classes.button}>
+        return <a onClick={action} style={{textDecoration:'none',color:'rgba(0, 0, 0, 0.54)'}} href="#sort" className={classes.button}>
                 {name}
                 </a>;       
 }
@@ -111,7 +111,7 @@ const EditButton = ({path}) => {
 const Row = (props) => (
 	<TableRow className={`site-row ${(props.index+1)%2 === 0 ? 'network-even' : 'network-odd'} `}>
 		<TableCell><EquipmentButton path={`/site/${props.data._id}`} name={props.data.name}/></TableCell>
-		<TableCell>{props.data.subnet || `none`}</TableCell>
+		<TableCell>{props.data.subnet || <span>&nbsp;---</span>}</TableCell>
 		<TableCell><Link to={`/edit/${props.data._id}`}><EditButton/></Link></TableCell>
 		<TableCell><DeleteButton {...props} action={handleDelete(props.data._id, props.setRedirect)}/></TableCell>
 	</TableRow>

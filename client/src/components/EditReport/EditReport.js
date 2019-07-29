@@ -15,10 +15,12 @@ import Fab from '@material-ui/core/Fab';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Typography from '@material-ui/core/Typography';
 
+import DatePicker from 'react-date-picker';
+
 class EditReport extends React.Component {
 	state = {
 	reportId: '',
-	date: moment(Date.now()),
+	date: new Date(),
 	site: '',
 	circuitId: '',
 	subnet: '',
@@ -27,6 +29,8 @@ class EditReport extends React.Component {
 	wirelessRouters: [],
 	switches: []
 	};
+
+  	onChange = date => this.setState({ date })
 
 	componentDidMount() {
 		const { id } = this.props.match.params;
@@ -39,6 +43,7 @@ class EditReport extends React.Component {
 				{	
 					reportId: id,
 					site: res.data.name,
+					date: new Date(res.data.date),
 					circuitId: res.data.circuitID,
 					subnet: res.data.subnet,
 					modem: res.data.modem,
@@ -163,14 +168,16 @@ class EditReport extends React.Component {
 			const { 
 				site, 
 				circuitId,
+				date,
 				subnet, 
 				modem, 
 				router, 
 				wirelessRouters, 
 				switches } = this.state;
-			const dateObj = this.state.date.toDate();
+			const dateObj = new Date();
 			const newData = {
 				name: site,
+				date: date,
 				lastUpdated: dateObj,
 				circuitID: circuitId,
 				subnet: subnet,
@@ -201,22 +208,14 @@ class EditReport extends React.Component {
                 name="site" 
                 value={ this.state.site } 
                 onChange={ this.handleChange } 
-                placeholder="required" 
+                placeholder="Required" 
                 type="text" 
                 tabIndex="1" 
                 autoFocus/>
 			</fieldset>
-			<fieldset>
-
 			<label>Date</label>
-			<input 
-                name="date" 
-                value={ this.state.date.format("dddd, MMMM Do YYYY") } 
-                onChange={ this.handleChange } 
-                placeholder={moment().format("dddd, MMMM Do YYYY")}
-                type="text" 
-                tabIndex="2" 
-                autoFocus/>
+			<fieldset>
+			<DatePicker onChange={this.onChange} value={this.state.date}/>
 			</fieldset>
 			<fieldset>
 				<label>Circuit ID</label>
@@ -224,7 +223,7 @@ class EditReport extends React.Component {
                 name="circuitId" 
                 value={ this.state.circuitId } 
                 onChange={ this.handleChange } 
-                placeholder="required" 
+                placeholder="Required" 
                 type="text" 
                 tabIndex="3" 
                 autoFocus/>
@@ -235,7 +234,7 @@ class EditReport extends React.Component {
                 name="subnet" 
                 value={ this.state.subnet } 
                 onChange={ this.handleChange } 
-                placeholder="required" 
+                placeholder="Required" 
                 type="text" 
                 tabIndex="3" 
                 autoFocus/>

@@ -13,9 +13,11 @@ import Button from '@material-ui/core/Button';
 import AddIcon from '@material-ui/icons/Add';
 import Fab from '@material-ui/core/Fab';
 
+import DatePicker from 'react-date-picker';
+
 class CreateReport extends React.Component {
 	state = {
-		date: moment(Date.now()),
+		date: new Date(),
 		site: '',
 		circuitId: '',
 		subnet: '',
@@ -23,8 +25,9 @@ class CreateReport extends React.Component {
 		router: {equipmentName: 'router'},
 		wirelessRouters: [],
 		switches: []
-
 	}
+  	onChange = date => this.setState({ date })
+
 	addWirelessRouter = (event) => {
 		this.setState({wirelessRouters: [...this.state.wirelessRouters, {equipmentName: 'wirelessRouter'} ] } );
 	}
@@ -91,7 +94,7 @@ class CreateReport extends React.Component {
 			router, 
 			wirelessRouters, 
 			switches } = this.state;
-		const dateObj = this.state.date.toDate();
+		const dateObj = this.state.date;
 		const newData = {
 			name: site,
 			date: dateObj,
@@ -121,22 +124,14 @@ class CreateReport extends React.Component {
                 name="site" 
                 value={ this.state.site } 
                 onChange={ this.handleChange } 
-                placeholder="required" 
+                placeholder="Required" 
                 type="text" 
                 tabIndex="1" 
                 autoFocus/>
 			</fieldset>
-			<fieldset>
-
 			<label>Date</label>
-			<input 
-                name="date" 
-                value={ this.state.date.format("dddd, MMMM Do YYYY") } 
-                onChange={() => { } } 
-                placeholder={moment().format("dddd, MMMM Do YYYY")}
-                type="text" 
-                tabIndex="2" 
-                autoFocus/>
+			<fieldset>
+             <DatePicker onChange={this.onChange} value={this.state.date}/>
 			</fieldset>
 			<fieldset>
 				<label>Circuit ID</label>
@@ -144,7 +139,7 @@ class CreateReport extends React.Component {
                 name="circuitId" 
                 value={ this.state.circuitId } 
                 onChange={ this.handleChange } 
-                placeholder="required" 
+                placeholder="Required" 
                 type="text" 
                 tabIndex="3" 
                 autoFocus/>
@@ -155,7 +150,7 @@ class CreateReport extends React.Component {
                 name="subnet" 
                 value={ this.state.subnet } 
                 onChange={ this.handleChange } 
-                placeholder="required" 
+                placeholder="Required" 
                 type="text" 
                 tabIndex="3" 
                 autoFocus/>

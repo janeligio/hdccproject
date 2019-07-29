@@ -1,9 +1,9 @@
 #create-form-container {
  	box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
  	width: 450px;
- 	margin: 0 auto;
+ 	margin: 3em auto;
   padding: 1em;
-  margin-top: 3em;
+
 }
 
 #create-form-container > * {
@@ -16,13 +16,16 @@
   margin-bottom: 10px;
 }
 
-#create-form-container input[type="text"] {
+#create-form-container input[type="text"],div.react-date-picker__inputGroup {
 	width: 90%;
 	border: 1px solid #ccc;
 	background: #FFF;
 /*	margin: 0 2em 0 0;
 */	padding: 10px;
 	display: block;
+}
+div.react-date-picker__wrapper {
+  border: none;
 }
 #create-form-container input[type="text"]:hover {
   -webkit-transition: border-color 0.3s ease-in-out;

@@ -81,7 +81,7 @@ export default function SimpleCard(props) {
           <br />
         <Typography style={{fontSize:'0.7em'}} className={classes.pos} color="textSecondary">
           {props.data.lastUpdated 
-            ? `Updated: ${moment(props.data.lastUpdated).format("MMMM Do YYYY")}`
+            ? `Updated: ${moment(props.data.lastUpdated).fromNow()}`
             : ``
           }
           </Typography>

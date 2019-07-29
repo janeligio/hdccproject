@@ -174,7 +174,7 @@ class EditReport extends React.Component {
 				router, 
 				wirelessRouters, 
 				switches } = this.state;
-			const dateObj = new Date();
+			const dateObj = Date.now();
 			const newData = {
 				name: site,
 				date: date,

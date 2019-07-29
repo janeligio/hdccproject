@@ -55,7 +55,7 @@ const JobSite = (props) => {
           Report generated on {moment(props.data.date).format("MMMM Do YYYY, h:mm A, ddd")}
        </Typography>
         <Typography variant="caption" display="block" gutterBottom>
-          {props.data.lastUpdated ? `Last Updated: ${moment(props.data.lastUpdated).format("MMMM Do YYYY, h:mm A, ddd")}` : null }
+          {props.data.lastUpdated ? `Last Updated: ${moment(props.data.lastUpdated).fromNow()} on ${moment(props.data.lastUpdated).format("MMMM Do YYYY, h:mm A, ddd")}` : null }
        </Typography>
       <Typography variant="subtitle2" gutterBottom>
         Circuit ID: {props.data.circuitID || `n/a`}

@@ -64,6 +64,12 @@ router.get('/download/all', (req, res) => {
 				reportPtr.router = flattenObjectToString(report.router);
 				reportPtr.wirelessRouters = flattenArrayOfObjectsToString(report.wirelessRouters);
 				reportPtr.switches = flattenArrayOfObjectsToString(report.switches);
+				reportPtr.date = moment(report.date).format("MM/DD/YYYY, h:mm a, dddd");
+				if(typeof report.lastUpdated !== 'undefined'){
+					reportPtr.lastUpdated = moment(report.lastUpdated).format("MM/DD/YYYY, h:mm a, dddd");
+				} else {
+					reportPtr.lastUpdated = "";
+				}
 				return reportPtr;
 			});
 			const filename = 'reports.csv';
@@ -71,7 +77,7 @@ router.get('/download/all', (req, res) => {
 			res.setHeader('Content-Type', 'text/csv');
 			res.setHeader('Content-Disposition', `attachment; filename=${filename}`);
 			try {
-				res.csv(data, true);
+				res.csv(_.sortBy(data, o => o.name), true);
 			} catch (err) {
 				res.status(500).json({success:false});
 			}

@@ -69,7 +69,6 @@ export default function LandingPage(props) {
 	      />
 	  	</div>
 
-	  	<KOIP/>
 
       <div style={{display:'none'}}>
       	<div ref={networkPageRef}>

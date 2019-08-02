@@ -57,12 +57,25 @@ const JobSite = (props) => {
         <Typography variant="caption" display="block" gutterBottom>
           {props.data.lastUpdated ? `Last Updated: ${moment(props.data.lastUpdated).fromNow()} on ${moment(props.data.lastUpdated).format("MMMM Do YYYY, h:mm A, ddd")}` : null }
        </Typography>
-      <Typography variant="subtitle2" gutterBottom>
-        Circuit ID: {props.data.circuitID || `n/a`}
-      </Typography>
-      <Typography variant="subtitle2" gutterBottom>
-        Subnet: {props.data.subnet || `n/a`}      
-      </Typography>
+
+       <div style={{display:'flex'}}>
+        <Typography style={{flex:1}} variant="subtitle2" gutterBottom>
+          Circuit ID: {props.data.circuitID || `n/a`}
+        </Typography>
+        <Typography style={{flex:1}} variant="subtitle2" gutterBottom>
+          Internal IP: {props.data.internalIP || `n/a`}      
+        </Typography>
+      </div>
+
+      <div style={{display:'flex'}}>
+        <Typography style={{flex:1}} variant="subtitle2" gutterBottom>
+          Subnet: {props.data.subnet || `n/a`}      
+        </Typography>
+        <Typography style={{flex:1}} variant="subtitle2" gutterBottom>
+          External IP: {props.data.externalIP || `n/a`}      
+        </Typography>
+      </div>
+
       </div>
       <Typography variant="h6" gutterBottom>
         Inventory

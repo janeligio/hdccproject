@@ -70,9 +70,23 @@ export default function SimpleCard(props) {
   return (
     <Card className={classes.card}>
       <CardContent>
-        <Typography className={classes.title} color="textSecondary" gutterBottom>
-          Subnet: {props.data.subnet || `none`}
-        </Typography>
+
+       <div style={{display:'flex'}}>
+          <Typography style={{flex:1}} className={classes.title} color="textSecondary" gutterBottom>
+            Subnet: {props.data.subnet || `none`}
+          </Typography>
+          <Typography style={{fontSize:'0.7em',flex:1}} className={classes.pos} color="textSecondary">
+           {!!props.data.internalIP && `
+              Internal IP: ${props.data.internalIP}
+            `}
+          </Typography>
+          <Typography style={{fontSize:'0.7em',flex:1}} className={classes.pos} color="textSecondary">
+           {!!props.data.externalIP && `
+             External IP: ${props.data.externalIP}
+            `}
+          </Typography>
+        </div>
+
         <Typography variant="h5" component="h2">
           {props.data.name}
         </Typography>

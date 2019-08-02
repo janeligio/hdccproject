@@ -87,7 +87,7 @@ router.get('/download/all', (req, res) => {
 
 // @route GET api/reports/download/:id
 // @desc Find a specific report by id
-// @access public
+	Report// @access public
 router.get('/download/:id', (req, res) => {
 	Report
 		.findById(req.params.id)
@@ -140,6 +140,8 @@ router.post('/create', (req, res) => {
 		lastUpdated: null,
 		circuitID: req.body.circuitID,
 		subnet: req.body.subnet,
+		internalIP: req.body.internalIP,
+		externalIP: req.body.externalIP,
 		modem: newModem,
 		router: newRouter,
 		wirelessRouters: newWirelessRouters,
@@ -168,6 +170,8 @@ router.post('/edit/:reportId', (req, res) => {
 					lastUpdated: updatedReport.lastUpdated,
 					circuitID: updatedReport.circuitID,
 					subnet: updatedReport.subnet,
+					internalIP: updatedReport.internalIP,
+					externalIP: updatedReport.externalIP,
 					modem: updatedReport.modem,
 					router: updatedReport.router,
 					wirelessRouters: updatedReport.wirelessRouters,

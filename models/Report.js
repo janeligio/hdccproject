@@ -22,6 +22,8 @@ const ReportSchema = new Schema({
 	},
 	circuitID: {type: String, default: ''},
 	subnet: {type: String, default: '000'},
+	internalIP: {type: String, default: ''},
+	externalIP: {type: String, default: ''},
 	modem: EquipmentSchema,
 	router: EquipmentSchema,
 	wirelessRouters: [EquipmentSchema],

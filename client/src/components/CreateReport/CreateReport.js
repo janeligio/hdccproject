@@ -21,6 +21,8 @@ class CreateReport extends React.Component {
 		site: '',
 		circuitId: '',
 		subnet: '',
+		internalIP: '',
+		externalIP: '',
 		modem: {equipmentName: 'modem'},
 		router: {equipmentName: 'router'},
 		wirelessRouters: [],
@@ -90,6 +92,8 @@ class CreateReport extends React.Component {
 			site, 
 			circuitId,
 			subnet, 
+			internalIP,
+			externalIP, 
 			modem, 
 			router, 
 			wirelessRouters, 
@@ -100,6 +104,8 @@ class CreateReport extends React.Component {
 			date: dateObj,
 			subnet: subnet,
 			circuitID: circuitId,
+			internalIP: internalIP,
+			externalIP: externalIP,
 			modem: modem,
 			router: router,
 			wirelessRouters: wirelessRouters,
@@ -149,6 +155,28 @@ class CreateReport extends React.Component {
 			<input 
                 name="subnet" 
                 value={ this.state.subnet } 
+                onChange={ this.handleChange } 
+                placeholder="Required" 
+                type="text" 
+                tabIndex="3" 
+                autoFocus/>
+			</fieldset>
+			<fieldset>
+				<label>Internal IP Address</label>
+			<input 
+                name="internalIP" 
+                value={ this.state.internalIP } 
+                onChange={ this.handleChange } 
+                placeholder="Required" 
+                type="text" 
+                tabIndex="3" 
+                autoFocus/>
+			</fieldset>
+			<fieldset>
+				<label>External IP Address</label>
+			<input 
+                name="externalIP" 
+                value={ this.state.externalIP } 
                 onChange={ this.handleChange } 
                 placeholder="Required" 
                 type="text" 
@@ -220,4 +248,5 @@ function AddButton({action, name}) {
                 <AddIcon />
                 </Fab>{name}</div>
 }
+
 export default CreateReport;

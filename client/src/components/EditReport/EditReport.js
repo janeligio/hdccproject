@@ -4,6 +4,8 @@ import moment from 'moment';
 import EquipmentFieldset from '../CreateReport/EquipmentFieldset';
 import EquipmentFieldsetMultiple from '../CreateReport/EquipmentFieldsetMultiple';
 import { withRouter } from 'react-router-dom';
+import RadioButtonsGroup from '../CreateReport/RadioButtonsGroup';
+import SwitchLabels from './SwitchLabels';
 
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css'; 
@@ -23,6 +25,8 @@ class EditReport extends React.Component {
 	date: new Date(),
 	site: '',
 	circuitId: '',
+	connectionType: 'DIA',
+	active: true,	
 	subnet: '',
 	internalIP: '',
 	externalIP: '',
@@ -34,6 +38,12 @@ class EditReport extends React.Component {
 
   	onChange = date => this.setState({ date })
 
+  	handleRadioChange = event => {
+  		this.setState({connectionType: event.target.value});
+  	}
+  	handleToggleSWitch = name => event => {
+  		this.setState({active: event.target.checked});
+  	}
 	componentDidMount() {
 		const { id } = this.props.match.params;
 		const url = `/api/reports/find/${id}`;
@@ -47,6 +57,8 @@ class EditReport extends React.Component {
 					site: res.data.name,
 					date: new Date(res.data.date),
 					circuitId: res.data.circuitID,
+					connectionType: res.data.connectionType,
+					active: res.data.active,
 					subnet: res.data.subnet,
 					internalIP: res.data.internalIP,
 					externalIP: res.data.externalIP,
@@ -172,6 +184,8 @@ class EditReport extends React.Component {
 			const { 
 				site, 
 				circuitId,
+				connectionType,
+				active,
 				date,
 				subnet,
 				internalIP,
@@ -186,6 +200,8 @@ class EditReport extends React.Component {
 				date: date,
 				lastUpdated: dateObj,
 				circuitID: circuitId,
+				connectionType: connectionType,
+				active: active,
 				subnet: subnet,
 				internalIP: internalIP,
 				externalIP: externalIP,
@@ -235,6 +251,12 @@ class EditReport extends React.Component {
                 type="text" 
                 tabIndex="3" 
                 autoFocus/>
+			</fieldset>
+			<fieldset>
+				<RadioButtonsGroup value={this.state.connectionType} handleChange={this.handleRadioChange}/>
+			</fieldset>
+			<fieldset>
+				<SwitchLabels active={this.state.active} handleChange={this.handleToggleSWitch}/>
 			</fieldset>
 			<fieldset>
 				<label>Subnet</label>

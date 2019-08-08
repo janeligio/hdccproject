@@ -6,12 +6,14 @@ import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import moment from 'moment';
+import SwitchLabels from './SwitchLabels';
+import axios from 'axios';
 
 const useStyles = makeStyles(theme => ({
   card: {
     minWidth: 200,
     width: 300,
-    height: 240,
+    height: 280,
     margin: '1em',
   },
   bullet: {
@@ -30,12 +32,23 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
+const inactiveStyle = {
+  backgroundColor: 'grey',
+  color: 'white'
+}
 export default function SimpleCard(props) {
   const classes = useStyles();
   const { wirelessRouters, switches } = props.data;
   const hasModem = props.data.modem.brand ? true : false;
   const hasRouter = props.data.router.brand ? true : false;
   let hasWireless, hasSwitch;
+
+  const handleToggle = field => event => {
+    axios
+      .post(`/api/reports/edit/makeactive/${props.data._id}`, {active:!props.data.active})
+      .then(res => console.log(res))
+      .catch(err => console.log(err));
+  };
   if(wirelessRouters.length !== 0 && wirelessRouters[0].brand !== "") {
     hasWireless = [true, wirelessRouters.length];
   } else { 
@@ -68,23 +81,14 @@ export default function SimpleCard(props) {
     `
   }
   return (
-    <Card className={classes.card}>
+    <Card style={!props.data.active ? inactiveStyle : null} className={classes.card}>
       <CardContent>
 
        <div style={{display:'flex'}}>
           <Typography style={{flex:1}} className={classes.title} color="textSecondary" gutterBottom>
             Subnet: {props.data.subnet || `none`}
           </Typography>
-          <Typography style={{fontSize:'0.7em',flex:1}} className={classes.pos} color="textSecondary">
-           {!!props.data.internalIP && `
-              Internal IP: ${props.data.internalIP}
-            `}
-          </Typography>
-          <Typography style={{fontSize:'0.7em',flex:1}} className={classes.pos} color="textSecondary">
-           {!!props.data.externalIP && `
-             External IP: ${props.data.externalIP}
-            `}
-          </Typography>
+          <SwitchLabels active={props.data.active} handleChange={handleToggle}/>
         </div>
 
         <Typography variant="h5" component="h2">
@@ -100,6 +104,23 @@ export default function SimpleCard(props) {
           }
           </Typography>
         </Typography>
+        <div>
+          <Typography style={{fontSize:'0.9em',flex:1, margin: 0}} className={classes.pos} color="textSecondary">
+           {!!props.data.connectionType && `
+              Connection Type: ${props.data.connectionType}
+            `}
+          </Typography>
+          <Typography style={{fontSize:'0.9em',flex:1, margin: 0}} className={classes.pos} color="textSecondary">
+           {!!props.data.internalIP && `
+              Internal IP: ${props.data.internalIP}
+            `}
+          </Typography>
+          <Typography style={{fontSize:'0.9em',flex:1, margin: '0 0 5px 0'}} className={classes.pos} color="textSecondary">
+           {!!props.data.externalIP && `
+             External IP: ${props.data.externalIP}
+            `}
+          </Typography>
+        </div>
         <Typography variant="body2" component="p">
           { message }
         </Typography>

@@ -139,6 +139,8 @@ router.post('/create', (req, res) => {
 		date: req.body.date,
 		lastUpdated: null,
 		circuitID: req.body.circuitID,
+		connectionType: req.body.connectionType,
+		active: true,
 		subnet: req.body.subnet,
 		internalIP: req.body.internalIP,
 		externalIP: req.body.externalIP,
@@ -169,6 +171,8 @@ router.post('/edit/:reportId', (req, res) => {
 					date: updatedReport.date,
 					lastUpdated: updatedReport.lastUpdated,
 					circuitID: updatedReport.circuitID,
+					connectionType: updatedReport.connectionType,
+					active: updatedReport.active,
 					subnet: updatedReport.subnet,
 					internalIP: updatedReport.internalIP,
 					externalIP: updatedReport.externalIP,
@@ -184,6 +188,20 @@ router.post('/edit/:reportId', (req, res) => {
 					res.json({success:true});
 				}
 			);
+	} catch (err) {
+		res.json({success:false});
+	}
+
+});
+// @route POST api/reports/edit/makeactive/:id
+// @desc Update a report
+// @access private
+router.post('/edit/makeactive/:reportId', (req, res) => {
+	const { reportId } = req.params;
+	const active = req.body.active === 'active' ? true : false;
+
+	try {
+		Report.updateOne({_id:reportId}, {$set: {active:active} });
 	} catch (err) {
 		res.json({success:false});
 	}

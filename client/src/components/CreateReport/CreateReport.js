@@ -4,7 +4,7 @@ import './CreateReport.css';
 import moment from 'moment';
 import EquipmentFieldset from './EquipmentFieldset';
 import EquipmentFieldsetMultiple from './EquipmentFieldsetMultiple';
-
+import RadioButtonsGroup from './RadioButtonsGroup';
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css'; 
 
@@ -20,6 +20,8 @@ class CreateReport extends React.Component {
 		date: new Date(),
 		site: '',
 		circuitId: '',
+		connectionType: 'DIA',
+		active: true,
 		subnet: '',
 		internalIP: '',
 		externalIP: '',
@@ -30,6 +32,9 @@ class CreateReport extends React.Component {
 	}
   	onChange = date => this.setState({ date })
 
+  	handleRadioChange = event => {
+  		this.setState({connectionType: event.target.value});
+  	}
 	addWirelessRouter = (event) => {
 		this.setState({wirelessRouters: [...this.state.wirelessRouters, {equipmentName: 'wirelessRouter'} ] } );
 	}
@@ -91,6 +96,8 @@ class CreateReport extends React.Component {
 		const { 
 			site, 
 			circuitId,
+			connectionType,
+			active,
 			subnet, 
 			internalIP,
 			externalIP, 
@@ -104,6 +111,8 @@ class CreateReport extends React.Component {
 			date: dateObj,
 			subnet: subnet,
 			circuitID: circuitId,
+			connectionType: connectionType,
+			active: active,
 			internalIP: internalIP,
 			externalIP: externalIP,
 			modem: modem,
@@ -149,6 +158,9 @@ class CreateReport extends React.Component {
                 type="text" 
                 tabIndex="3" 
                 autoFocus/>
+			</fieldset>
+			<fieldset>
+				<RadioButtonsGroup value={this.state.connectionType} handleChange={this.handleRadioChange}/>
 			</fieldset>
 			<fieldset>
 				<label>Subnet</label>

@@ -21,6 +21,8 @@ const ReportSchema = new Schema({
 		type: Date,
 	},
 	circuitID: {type: String, default: ''},
+	connectionType: {type: String, default: ''},
+	active: {type: Boolean, default: true },
 	subnet: {type: String, default: '000'},
 	internalIP: {type: String, default: ''},
 	externalIP: {type: String, default: ''},

@@ -53,7 +53,6 @@ const Row = (props) => (
 
 export default function JobSiteNetwork(props) {
 	const [redirect, setRedirect] = useState(false);
-	const [fieldToSortBy] = useState(['name', 'asc']);
 
 	function convertSubnetToInt(site) {
 		let obj = site;
@@ -70,7 +69,7 @@ export default function JobSiteNetwork(props) {
 
 				<TableBody>
 					{
-						_.orderBy(_.map(props.jobsites, convertSubnetToInt), fieldToSortBy[0], fieldToSortBy[1]).map((site, index) => (
+						props.jobsites.map((site, index) => (
 						<Row {...props} data={site} index={index} setRedirect={setRedirect}/>
 						)
 					)}

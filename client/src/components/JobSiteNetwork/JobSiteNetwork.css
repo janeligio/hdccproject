@@ -17,3 +17,11 @@
 	transition: .5s;
 	box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);*/
 }
+
+h2.MuiTypography-root.MuiTypography-h5 {
+	margin: .5em;
+	margin-top: 2em;
+}
+
+td.MuiTableCell-root.subnet.MuiTableCell-body {
+}

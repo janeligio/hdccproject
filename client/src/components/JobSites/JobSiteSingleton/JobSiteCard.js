@@ -13,7 +13,6 @@ const useStyles = makeStyles(theme => ({
   card: {
     minWidth: 200,
     width: 300,
-    height: 280,
     margin: '1em',
   },
   bullet: {
@@ -33,8 +32,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const inactiveStyle = {
-  backgroundColor: 'grey',
-  color: 'white'
+  backgroundColor: '#D3D3D3',
 }
 export default function SimpleCard(props) {
   const classes = useStyles();
@@ -42,7 +40,7 @@ export default function SimpleCard(props) {
   const hasModem = props.data.modem.brand ? true : false;
   const hasRouter = props.data.router.brand ? true : false;
   let hasWireless, hasSwitch;
-
+  
   const handleToggle = field => event => {
     axios
       .post(`/api/reports/edit/makeactive/${props.data._id}`, {active:!props.data.active})
@@ -121,7 +119,9 @@ export default function SimpleCard(props) {
             `}
           </Typography>
         </div>
-        <Typography variant="body2" component="p">
+        <Typography style={{
+          padding: '1em'
+        }} variant="body2" component="p">
           { message }
         </Typography>
       </CardContent>

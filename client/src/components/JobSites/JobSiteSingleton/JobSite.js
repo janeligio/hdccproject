@@ -9,6 +9,10 @@ import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import ReactToPrint from 'react-to-print';
 
+const inactiveStyle = {
+  backgroundColor: '#D3D3D3',
+}
+
 const JobSite = (props) => {
   const [ref] = React.useState(useRef());
   let wirelessRoutersEl, switchesEl;
@@ -47,7 +51,7 @@ const JobSite = (props) => {
   ;
 
   return(
-    <Paper ref={ref} elevation={5} className={classes.root}>
+    <Paper style={!props.data.active ? inactiveStyle : null} ref={ref} elevation={5} className={classes.root}>
     <div>
       <div>
         <Typography variant="h3" component="h1">{props.data.name}</Typography>

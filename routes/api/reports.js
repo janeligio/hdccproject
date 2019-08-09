@@ -184,7 +184,7 @@ router.post('/edit/:reportId', (req, res) => {
 				},
 				null,
 				(err, docs) => {
-					console.log(`Successfully Document #${reportId}`);
+					console.log(`Successfully Updated Document #${reportId}`);
 					res.json({success:true});
 				}
 			);
@@ -198,10 +198,17 @@ router.post('/edit/:reportId', (req, res) => {
 // @access private
 router.post('/edit/makeactive/:reportId', (req, res) => {
 	const { reportId } = req.params;
-	const active = req.body.active === 'active' ? true : false;
-
+	const activeOrNot = req.body.active;
 	try {
-		Report.updateOne({_id:reportId}, {$set: {active:active} });
+		Report.updateOne(
+			{_id:reportId},
+			{$set: {active: activeOrNot} },
+			null,
+			(err, docs) => {
+				console.log(`Successfully Document #${reportId}`);
+				res.json({success:true});
+			}
+);
 	} catch (err) {
 		res.json({success:false});
 	}

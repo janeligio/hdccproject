@@ -15,6 +15,7 @@ import Button from '@material-ui/core/Button';
 import ViewModuleIcon from '@material-ui/icons/ViewModule';
 import ViewStreamIcon from '@material-ui/icons/ViewStream';
 import IconButton from '@material-ui/core/IconButton';
+import moment from 'moment';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -63,9 +64,8 @@ export default function JobSites(props) {
   const [filteredSites, setFilteredSites] = React.useState([]);
   const [filter, setFilter] = React.useState({
     name: '',
-    filterByDateCreated: false,
-    filterByDateUpdated: false,
-    filterByActive: false,
+    filterByDate: '',
+    filterByActive: '',
     keywords: []
   });
   const [view, setView] = React.useState('view-grid');
@@ -91,11 +91,51 @@ export default function JobSites(props) {
   }
   function filterJobSites(filter) {
     let filteredSites = jobsites;
-    filteredSites = _.filter(filteredSites, site => {
-      let name = site.name.toLowerCase();
-      return name.indexOf(filter.name.toLowerCase()) !== -1
-    });
+    if(filter.name.length !== 0) {
+      filteredSites = _.filter(filteredSites, site => {
+        let name = site.name.toLowerCase();
+        return name.indexOf(filter.name.toLowerCase()) !== -1
+      });
+    } 
+
+    if(filter.filterByDate !== '') {
+      filteredSites = _.filter(filteredSites, site => {
+        // Case by case filter by date
+        switch(filter.filterByDate) {
+          case 'most-recently-updated':
+            filteredSites = filterDate(filteredSites, 'lastUpdated', 'asc')
+            break;
+          case 'least-recently-updated':
+            filteredSites = filterDate(filteredSites, 'lastUpdated', 'desc')
+            break;
+          case 'most-recently-created':
+            filteredSites = filterDate(filteredSites, 'date', 'asc')
+            break;
+          case 'least-recently-created':
+            filteredSites = filterDate(filteredSites, 'date', 'desc')
+            break;
+          default:
+            break;
+        }
+      })
+    }
+    // Filter by active/inactive
+    if(filter.filterByActive !== '') {
+      if(filter.filterByActive === 'active') {
+        filteredSites = _.filter(filteredSites, o => o.active);
+      } else {
+        filteredSites = _.filter(filteredSites, o => !o.active);
+      }
+    }
+    // Filter by keywords
+
     setFilteredSites(filteredSites);
+  }
+
+  function filterDate(arr, field, ascOrDesc) {
+    return _.orderBy(arr, (o: any) => {
+      return moment(o[field].format('YYYYMMDD');
+    }, [ascOrDesc]);
   }
 
 	function grid() {

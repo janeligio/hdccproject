@@ -57,31 +57,48 @@ export default function SimpleCard(props) {
   } else { 
     hasSwitch = [false, 0];
   }
-  let message;
-  if(!hasModem && !hasRouter && !hasWireless[0] && !hasSwitch[0]) {
-    message = 'No equipment.';
-  } else if (hasModem && hasRouter && hasWireless[0] && hasSwitch[0]) {
-    message = `Has a modem, router, ${hasWireless[1]} wireless router${hasWireless[1]>1?'s':''}, and ${hasSwitch[1]} switch${hasSwitch[1]>1?'es':''}.`;
-  } else {
-    // message = `Has 
-    // ${hasModem ? 'a modem':''}
-    // ${!hasWireless[0] && !hasSwitch ? ' and ':', '}
-    // ${hasRouter?'a router': ''} 
-    // ${!hasSwitch[0] ? ' and ':', '}
-    // ${hasWireless[0]?`${hasWireless[1]} router `:''}
+  const hasEquipment = hasRouter || hasModem || hasWireless[0] || hasSwitch[0];
+  const message = 
+    hasEquipment ?
+    <>
+    <Typography variant="subtitle2" >
+    Equipment
+    </Typography>
+    <ul style={{listStyleType:'none',
+      margin:0,
+      padding:0,
+      paddingLeft:'1em'}}>
+      {hasRouter && <li>1 Router</li>}
+      {hasModem &&  <li>1 Modem</li>}
+      {hasWireless[0] && <li>{hasWireless[1]} Wireless Router{hasWireless[1]>1 && `s`}</li>}
+      {hasSwitch[0] && <li>{hasSwitch[1]} Switch{hasSwitch[1]>1 && `es`}</li>}
+    </ul>
+    </>
+    : `No equipment`
+  ;
+  // if(!hasModem && !hasRouter && !hasWireless[0] && !hasSwitch[0]) {
+  //   message = 'No equipment.';
+  // } else if (hasModem && hasRouter && hasWireless[0] && hasSwitch[0]) {
+  //   message = `Has a modem, router, ${hasWireless[1]} wireless router${hasWireless[1]>1?'s':''}, and ${hasSwitch[1]} switch${hasSwitch[1]>1?'es':''}.`;
+  // } else {
+  //   message = `Has 
+  //   ${hasModem ? 'a modem':''}
+  //   ${!hasWireless[0] && !hasSwitch ? ' and ':', '}
+  //   ${hasRouter?'a router': ''} 
+  //   ${!hasSwitch[0] ? ' and ':', '}
+  //   ${hasWireless[0]?`${hasWireless[1]} router `:''}
 
-    // .` 
-    message = `Has a ${hasModem?'-modem ':''}
-    ${hasRouter?'-router ':''}
-    ${hasWireless[0]?`-${hasWireless[1]} wireless router${hasWireless[1].length>1?'s':''}`:''}
-    ${hasSwitch[0]?`-${hasSwitch[1]} switch${hasSwitch[1].length>1?'es':''}`:''}
+  //   .` 
+  //   message = `Has a ${hasModem?'-modem ':''}
+  //   ${hasRouter?'-router ':''}
+  //   ${hasWireless[0]?`-${hasWireless[1]} wireless router${hasWireless[1].length>1?'s':''}`:''}
+  //   ${hasSwitch[0]?`-${hasSwitch[1]} switch${hasSwitch[1].length>1?'es':''}`:''}
 
-    `
-  }
+  //   `
+  // }
   return (
     <Card style={!props.data.active ? inactiveStyle : null} className={classes.card}>
       <CardContent>
-
        <div style={{display:'flex'}}>
           <Typography style={{flex:1}} className={classes.title} color="textSecondary" gutterBottom>
             Subnet: {props.data.subnet || `none`}
@@ -89,7 +106,7 @@ export default function SimpleCard(props) {
           <SwitchLabels active={props.data.active} handleChange={handleToggle}/>
         </div>
 
-        <Typography variant="h5" component="h2">
+        <Typography style={{marginLeft:0, marginTop:0}} variant="h5" component="h2">
           {props.data.name}
         </Typography>
         <Typography className={classes.pos} color="textSecondary">
@@ -125,7 +142,7 @@ export default function SimpleCard(props) {
           { message }
         </Typography>
       </CardContent>
-      <CardActions> 
+      <CardActions style={{borderTop:'1px solid #CCC'}}> 
         <Button color="primary" href={`/site/${props.data._id}`} className={classes.button} size="small">View</Button>
       </CardActions>
     </Card>

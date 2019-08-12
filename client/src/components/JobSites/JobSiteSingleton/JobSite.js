@@ -9,6 +9,7 @@ import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import ReactToPrint from 'react-to-print';
 
+
 const inactiveStyle = {
   backgroundColor: '#D3D3D3',
 }
@@ -98,7 +99,7 @@ const JobSite = (props) => {
       <div style={{display: 'flex'}}>
         <EditButton reportId={props.data._id}/>
         <ReactToPrint
-          trigger={() => <button style={hideButtonStyle}><SubmitButton color="green" name={`print`}/></button>}
+          trigger={() => <button style={props.data.active ? hideButtonStyleActive : hideButtonStyleInactive}><SubmitButton color="green" name={`print`}/></button>}
           content={() => ref.current}
         />
       </div>
@@ -173,8 +174,14 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const hideButtonStyle = {
-  backgroundColor: 'white',
+const hideButtonStyleActive = {
+  backgroundColor: '#FFF',
+  border: 'none',
+  padding: 0,
+  margin: '0 0 0 5px'
+};
+const hideButtonStyleInactive = {
+  backgroundColor: '#D3D3D3',
   border: 'none',
   padding: 0,
   margin: '0 0 0 5px'

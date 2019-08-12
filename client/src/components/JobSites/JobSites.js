@@ -12,6 +12,9 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Radio from '@material-ui/core/Radio';
 import FormLabel from '@material-ui/core/FormLabel';
 import Button from '@material-ui/core/Button';
+import ViewModuleIcon from '@material-ui/icons/ViewModule';
+import ViewStreamIcon from '@material-ui/icons/ViewStream';
+import IconButton from '@material-ui/core/IconButton';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -32,13 +35,40 @@ const useStyles = makeStyles(theme => ({
   margin: {
     margin: '25px 0 0 10px',
   },
+  button: {
+    margin: theme.spacing(1),
+  },
 }));
+
+function ViewGridButton({action, disabled}) {
+  const classes = useStyles();
+  return (
+      <IconButton style={{marginTop:'1.3em'}} color={disabled ? `primary` : 'default'} onClick={action} className={classes.button} aria-label="view-grid">
+        <ViewModuleIcon/>
+      </IconButton>
+  );
+}
+function ViewDetailedButton({action, disabled}) {
+  const classes = useStyles();
+  return (
+      <IconButton style={{marginLeft:0,padding:'0.2',marginTop:'1.3em'}} color={disabled ? `primary` : 'default'} onClick={action} className={classes.button} aria-label="view-detailed">
+        <ViewStreamIcon/>
+      </IconButton>
+  );
+}
+
 export default function JobSites(props) {
   const classes = useStyles();
   const [jobsites, setJobsites] = React.useState([]);
   const [filteredSites, setFilteredSites] = React.useState([]);
-  const [filter, setFilter] = React.useState('');
-  const [value, setValue] = React.useState('card');
+  const [filter, setFilter] = React.useState({
+    name: '',
+    filterByDateCreated: false,
+    filterByDateUpdated: false,
+    filterByActive: false,
+    keywords: []
+  });
+  const [view, setView] = React.useState('view-grid');
   const [ref] = React.useState(useRef());
 
   useEffect(() => {
@@ -46,17 +76,24 @@ export default function JobSites(props) {
     filterJobSites(filter);
   });
 
-  function handleRadioChange(event) {
-    setValue(event.target.value);
-  }  
-  function handleFilterChange(event) {
-    setFilter(event.target.value);
+  function setGridView() {
+    if(view === 'view-detailed') {
+      setView('view-grid');
+    }
+  }
+  function setDetailedView() {
+    if(view === 'view-grid') {
+      setView('view-detailed');
+    }
+  }
+  const handleFilterChange = (field) => (event) => {
+    setFilter({[field]: event.target.value});
   }
   function filterJobSites(filter) {
     let filteredSites = jobsites;
     filteredSites = _.filter(filteredSites, site => {
       let name = site.name.toLowerCase();
-      return name.indexOf(filter.toLowerCase()) !== -1
+      return name.indexOf(filter.name.toLowerCase()) !== -1
     });
     setFilteredSites(filteredSites);
   }
@@ -72,40 +109,26 @@ export default function JobSites(props) {
 
 	return (
 	<div>
-	    <TextField
-	        id="filter"
-	        label="Filter:"
+        <div style={{display:'flex'}}>
+        <TextField
+	        id="Search"
+	        label="Search:"
 	        className={classes.textField}
-	        value={filter}
-	        onChange={handleFilterChange}
+	        value={filter.name}
+	        onChange={handleFilterChange('name')}
 	        margin="normal"
-	      />		
-   		<FormControl classes={{root: 'radio-container'}} component="fieldset">
-    	  <FormLabel classes={{
-    	  	root: 'radio-legend'
-    	  }} component="legend">View</FormLabel>
-      		<RadioGroup aria-label="position" name="position" value={value} onChange={handleRadioChange} row>
-		      	<FormControlLabel
-		          value="card"
-		          control={<Radio color="primary" />}
-		          label="Card"
-		          labelPlacement="end"
-		        />
-   		        <FormControlLabel
-		          value="detailed"
-		          control={<Radio color="primary" />}
-		          label="Detailed"
-		          labelPlacement="end"
-		        />
-	 		</RadioGroup>
-	    </FormControl>
+	      />
+
+        <ViewGridButton disabled={view === 'view-grid'} action={setGridView}/>
+        <ViewDetailedButton disabled={view === 'view-detailed'} action={setDetailedView} />
         <ReactToPrint
           trigger={() => <button style={hideButtonStyle}><PrintButton/></button>}
           content={() => ref.current}
         />
+        </div>
    	    <div ref={ref}>
-	      {value === 'card' ? grid() : sites()}
-		</div>
+          {view === 'view-grid' ? grid() : sites()}
+        </div>
 	</div> 	
       );
 }

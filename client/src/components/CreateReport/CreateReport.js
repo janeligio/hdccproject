@@ -1,7 +1,6 @@
 import React from 'react';
 import axios from 'axios';
 import './CreateReport.css';
-import moment from 'moment';
 import EquipmentFieldset from './EquipmentFieldset';
 import EquipmentFieldsetMultiple from './EquipmentFieldsetMultiple';
 import RadioButtonsGroup from './RadioButtonsGroup';

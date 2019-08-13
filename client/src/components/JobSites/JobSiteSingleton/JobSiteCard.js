@@ -43,7 +43,8 @@ export default function SimpleCard(props) {
   
   const handleToggle = field => event => {
     axios
-      .post(`/api/reports/edit/makeactive/${props.data._id}`, {active:!props.data.active})
+      .post(`/api/reports/edit/makeactive/${props.data._id}`, 
+      {active:!props.data.active, lastUpdated: Date.now()})
       .then(res => console.log(res))
       .catch(err => console.log(err));
   };

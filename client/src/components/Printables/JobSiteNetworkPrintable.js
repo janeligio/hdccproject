@@ -7,7 +7,6 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 import { Link, Redirect } from 'react-router-dom';
-import _ from 'lodash';
 
 import '../JobSiteNetwork/JobSiteNetwork.css';
 
@@ -54,12 +53,6 @@ const Row = (props) => (
 export default function JobSiteNetwork(props) {
 	const [redirect, setRedirect] = useState(false);
 
-	function convertSubnetToInt(site) {
-		let obj = site;
-		const subnetAsInt = parseInt(site.subnet);
-		obj.subnet = subnetAsInt;
-		return obj;
-	}
 	const classes = useStyles();
 	return (
 		<Paper className={classes.root}>

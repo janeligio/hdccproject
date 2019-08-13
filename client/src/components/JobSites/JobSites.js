@@ -6,11 +6,8 @@ import JobSite from './JobSiteSingleton/JobSite';
 import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/core/styles';
 import _ from 'lodash';
-import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControl from '@material-ui/core/FormControl';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Radio from '@material-ui/core/Radio';
-import FormLabel from '@material-ui/core/FormLabel';
 import Button from '@material-ui/core/Button';
 import ViewModuleIcon from '@material-ui/icons/ViewModule';
 import ViewStreamIcon from '@material-ui/icons/ViewStream';
@@ -82,9 +79,9 @@ export default function JobSites(props) {
   const [open, setOpen] = React.useState(false);
   const [ref] = React.useState(useRef());
 
-//   useEffect(() => {
-//     setJobsites(props.jobsites);
-// }, [props.jobsites]);
+  useEffect(() => {
+    setJobsites(props.jobsites);
+}, [props.jobsites]);
 
   function setGridView() {
     if(view === 'view-detailed') {
@@ -105,34 +102,43 @@ export default function JobSites(props) {
   const handleCheckBox = field => event => {
     setFilter({ ...filter, [field]: event.target.checked });
   }
-  // function handleFilterChange(event) {
-  //   setFilter({name: event.target.value});
-  // }
   const filterJobSites = useCallback( () => {
     let filteredSites = jobsites;
     if(filter.name.length !== 0) {
       filteredSites = _.filter(filteredSites, site => {
-        let name = site.name.toLowerCase();
-        return name.indexOf(filter.name.toLowerCase()) !== -1
+        const siteData = 
+          `${site.subnet.toLowerCase()} ${site.name.toLowerCase()} 
+          ${site.connectionType.toLowerCase()} ${site.circuitID.toLowerCase()} 
+          ${site.externalIP.toLowerCase()} ${site.internalIP.toLowerCase()}`;
+        return _.some(filter.name.trim().split(" "), keyword => _.includes(siteData, keyword));
       });
     }
+    //   filteredSites = _.filter(filteredSites, site => {
+    //     let name = site.name.toLowerCase();
+    //     return name.indexOf(filter.name.toLowerCase()) !== -1
+    //   });
+    // // }
 
     if(filter.filterByDate !== '') {
         // Case by case filter by date
         switch(filter.filterByDate) {
+          case 'subnet-desc':
+            filteredSites = _.sortBy(filteredSites, 'subnet', 'desc')
+            break;
+          case 'subnet-asc':
+            filteredSites = _.sortBy(filteredSites, 'subnet', 'desc').reverse()
+            break;          
           case 'most-recently-updated':
+            filteredSites = filterDate(filteredSites, 'lastUpdated', 'desc')
+            break;          
+          case 'least-recently-updated':
             filteredSites = filterDate(filteredSites, 'lastUpdated', 'asc')
             break;
-          case 'least-recently-updated':
-            filteredSites = filterDate(filteredSites, 'lastUpdated', 'desc')
-            break;
           case 'most-recently-created':
-            filteredSites = _.sortBy(filteredSites, site => {
-              return new moment(site.date);
-            }).reverse();
+            filteredSites = filterDate(filteredSites, 'date', 'desc')
             break;
           case 'least-recently-created':
-            filteredSites = filterDate(filteredSites, 'date', 'desc')
+            filteredSites = filterDate(filteredSites, 'date', 'asc')
             break;
           default:
         }
@@ -159,14 +165,13 @@ export default function JobSites(props) {
 
   useEffect(() => {
     filterJobSites();
-    console.log('test');
     }, [filter, filterJobSites]);
 
   function filterDate(arr, field, ascOrDesc) {
     return _.orderBy(arr, site => {
   //2019-07-19T23:55:36.632Z
   // console.log(new moment(site[field]).format('YYYYMMDD'))
-    //  return new moment(site[field])
+      return moment(site[field]);
     }, [ascOrDesc]);
   }
 
@@ -181,7 +186,7 @@ export default function JobSites(props) {
 
 	return (
 	<div>
-        <div style={{display:'flex'}}>
+        <div style={{display:'flex',flexWrap: 'wrap'}}>
         <TextField
 	        id="Search"
 	        label="Search:"
@@ -190,7 +195,7 @@ export default function JobSites(props) {
 	        onChange={handleFilterChange('name')}
 	        margin="normal"
 	      />
-        <FormGroup row>
+        <FormGroup style={{marginTop:'1em'}} row>
           <FormControlLabel
             control={
               <Checkbox
@@ -214,8 +219,8 @@ export default function JobSites(props) {
             label="Inactive"
           />
           </FormGroup>
-          <FormControl className={classes.formControl}>
-            <InputLabel htmlFor="sort-by-date">Sort By Date</InputLabel>
+          <FormControl style={{marginTop:'1em'}} className={classes.formControl}>
+            <InputLabel htmlFor="sort-by">Sort by</InputLabel>
             <Select
               open={open}
               onClose={toggleSelect}
@@ -224,10 +229,12 @@ export default function JobSites(props) {
               onChange={handleFilterChange('filterByDate')}
             >
               <MenuItem value=""><em>None</em></MenuItem>
-              <MenuItem value={'most-recently-updated'}>Most Recently Updated</MenuItem>
-              <MenuItem value={'least-recently-updated'}>Least Recently Updated</MenuItem>
-              <MenuItem value={'most-recently-created'}>Most Recently Created</MenuItem>
-              <MenuItem value={'least-recently-created'}>Least Recently Created</MenuItem>
+              <MenuItem value={'subnet-desc'}>Subnet (Low-High)</MenuItem>
+              <MenuItem value={'subnet-asc'}>Subnet (High-Low)</MenuItem>
+              <MenuItem value={'most-recently-updated'}>Date updated (newest)</MenuItem>
+              <MenuItem value={'least-recently-updated'}>Date updated (oldest)</MenuItem>
+              <MenuItem value={'most-recently-created'}>Date created (newest)</MenuItem>
+              <MenuItem value={'least-recently-created'}>Date created (oldest)</MenuItem>
             </Select>
           </FormControl>
 

@@ -202,10 +202,12 @@ router.post('/edit/makeactive/:reportId', (req, res) => {
 	try {
 		Report.updateOne(
 			{_id:reportId},
-			{$set: {active: activeOrNot} },
+			{$set: {active: activeOrNot,
+				lastUpdated: req.body.lastUpdated,
+			} },
 			null,
 			(err, docs) => {
-				console.log(`Successfully Document #${reportId}`);
+				console.log(`Successfully updated job site #${reportId}.`);
 				res.json({success:true});
 			}
 );
@@ -219,11 +221,13 @@ router.post('/edit/makeactive/:reportId', (req, res) => {
 // @desc Put reports into database
 // @access private
 router.delete('/delete', (req, res) => {
-	console.log(req.query.id);
 	Report.findById(req.query.id)
 		.then(report => report
 							.remove()
-							.then(() => res.json({success: true}))
+							.then(() => {res.json(
+								{success: true});
+								console.log(`Deleted job site #${req.query.id}.`);
+							})
 							.catch(err => res.status(404).json({success: false})));
 
 });

@@ -1,6 +1,5 @@
 import React from 'react';
 import axios from 'axios';
-import moment from 'moment';
 import EquipmentFieldset from '../CreateReport/EquipmentFieldset';
 import EquipmentFieldsetMultiple from '../CreateReport/EquipmentFieldsetMultiple';
 import { withRouter } from 'react-router-dom';

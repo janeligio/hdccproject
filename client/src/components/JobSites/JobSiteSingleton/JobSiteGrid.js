@@ -1,7 +1,6 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
-import _ from 'lodash';
 import JobSiteCard from './JobSiteCard';
 
 const useStyles = makeStyles(theme => ({
@@ -35,7 +34,7 @@ export default function SpacingGrid(props) {
             {
               props.sites.length !== 0
               ?
-              _.orderBy(props.sites, ["name"], ["asc"]).map(site => (
+              props.sites.map(site => (
               <Grid key={site._id} >
                <JobSiteCard data={site} />
               </Grid>

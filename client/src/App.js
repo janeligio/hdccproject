@@ -31,9 +31,12 @@ class App extends Component {
   }
 
   componentDidMount() {
-    this.getDB();
+    this.timer = setInterval(() => this.getDB(), 1000);
   }
-
+  componentWillUnmount() {
+    clearInterval(this.timer);
+    this.timer = null;
+  }
   render() {
      const mainPageStyle = {
       marginLeft: '20%',

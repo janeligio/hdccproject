@@ -9,7 +9,6 @@ import Container from '@material-ui/core/Container';
 import FileDownload from 'js-file-download';
 import ReactToPrint from 'react-to-print';
 import JobSiteNetworkPrintable from '../Printables/JobSiteNetworkPrintable';
-import KOIP from './KOIP';
 
 const useStyles = makeStyles(theme => ({
   root: {

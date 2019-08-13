@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useCallback } from 'react';
 import './JobSites.css';
 import JobSiteGrid from './JobSiteSingleton/JobSiteGrid';
 import ReactToPrint from 'react-to-print';
@@ -16,6 +16,11 @@ import ViewModuleIcon from '@material-ui/icons/ViewModule';
 import ViewStreamIcon from '@material-ui/icons/ViewStream';
 import IconButton from '@material-ui/core/IconButton';
 import moment from 'moment';
+import FormGroup from '@material-ui/core/FormGroup';
+import Checkbox from '@material-ui/core/Checkbox';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import Select from '@material-ui/core/Select';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -39,6 +44,10 @@ const useStyles = makeStyles(theme => ({
   button: {
     margin: theme.spacing(1),
   },
+  formControl: {
+    margin: theme.spacing(1),
+    minWidth: 120,
+  },
 }));
 
 function ViewGridButton({action, disabled}) {
@@ -60,21 +69,22 @@ function ViewDetailedButton({action, disabled}) {
 
 export default function JobSites(props) {
   const classes = useStyles();
-  const [jobsites, setJobsites] = React.useState([]);
-  const [filteredSites, setFilteredSites] = React.useState([]);
+  const [jobsites, setJobsites] = React.useState(props.jobsites);
+  const [filteredSites, setFilteredSites] = React.useState(jobsites);
   const [filter, setFilter] = React.useState({
     name: '',
     filterByDate: '',
-    filterByActive: '',
+    filterByActive: true,
+    filterByInactive: true,
     keywords: []
   });
   const [view, setView] = React.useState('view-grid');
+  const [open, setOpen] = React.useState(false);
   const [ref] = React.useState(useRef());
 
-  useEffect(() => {
-    setJobsites(props.jobsites);
-    filterJobSites(filter);
-  });
+//   useEffect(() => {
+//     setJobsites(props.jobsites);
+// }, [props.jobsites]);
 
   function setGridView() {
     if(view === 'view-detailed') {
@@ -86,20 +96,28 @@ export default function JobSites(props) {
       setView('view-detailed');
     }
   }
-  const handleFilterChange = (field) => (event) => {
-    setFilter({[field]: event.target.value});
+  function toggleSelect() {
+    setOpen(!open);
   }
-  function filterJobSites(filter) {
+  const handleFilterChange = field => event => {
+    setFilter({...filter, [field]: event.target.value});
+  }
+  const handleCheckBox = field => event => {
+    setFilter({ ...filter, [field]: event.target.checked });
+  }
+  // function handleFilterChange(event) {
+  //   setFilter({name: event.target.value});
+  // }
+  const filterJobSites = useCallback( () => {
     let filteredSites = jobsites;
     if(filter.name.length !== 0) {
       filteredSites = _.filter(filteredSites, site => {
         let name = site.name.toLowerCase();
         return name.indexOf(filter.name.toLowerCase()) !== -1
       });
-    } 
+    }
 
     if(filter.filterByDate !== '') {
-      filteredSites = _.filter(filteredSites, site => {
         // Case by case filter by date
         switch(filter.filterByDate) {
           case 'most-recently-updated':
@@ -109,32 +127,46 @@ export default function JobSites(props) {
             filteredSites = filterDate(filteredSites, 'lastUpdated', 'desc')
             break;
           case 'most-recently-created':
-            filteredSites = filterDate(filteredSites, 'date', 'asc')
+            filteredSites = _.sortBy(filteredSites, site => {
+              return new moment(site.date);
+            }).reverse();
             break;
           case 'least-recently-created':
             filteredSites = filterDate(filteredSites, 'date', 'desc')
             break;
           default:
-            break;
         }
-      })
     }
+
     // Filter by active/inactive
-    if(filter.filterByActive !== '') {
-      if(filter.filterByActive === 'active') {
+    if(filter.filterByActive && filter.filterByInactive) {
+
+    } else if(!filter.filterByActive && !filter.filterByInactive) {
+
+    } else {
+      if(filter.filterByActive) {
         filteredSites = _.filter(filteredSites, o => o.active);
-      } else {
-        filteredSites = _.filter(filteredSites, o => !o.active);
+      }
+      if(filter.filterByInactive) {
+          filteredSites = _.filter(filteredSites, o => !o.active);
       }
     }
-    // Filter by keywords
+
+  // Filter by keywords
 
     setFilteredSites(filteredSites);
-  }
+  }, [filter, jobsites]);
+
+  useEffect(() => {
+    filterJobSites();
+    console.log('test');
+    }, [filter, filterJobSites]);
 
   function filterDate(arr, field, ascOrDesc) {
-    return _.orderBy(arr, (o: any) => {
-      return moment(o[field].format('YYYYMMDD');
+    return _.orderBy(arr, site => {
+  //2019-07-19T23:55:36.632Z
+  // console.log(new moment(site[field]).format('YYYYMMDD'))
+    //  return new moment(site[field])
     }, [ascOrDesc]);
   }
 
@@ -158,6 +190,46 @@ export default function JobSites(props) {
 	        onChange={handleFilterChange('name')}
 	        margin="normal"
 	      />
+        <FormGroup row>
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={filter.filterByActive}
+                onChange={handleCheckBox('filterByActive')}
+                value="filterByActive"
+                color="primary"
+              />
+            }
+            label="Active"
+          />
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={filter.filterByInactive}
+                onChange={handleCheckBox('filterByInactive')}
+                value="filterByInactive"
+                color="primary"
+              />
+            }
+            label="Inactive"
+          />
+          </FormGroup>
+          <FormControl className={classes.formControl}>
+            <InputLabel htmlFor="sort-by-date">Sort By Date</InputLabel>
+            <Select
+              open={open}
+              onClose={toggleSelect}
+              onOpen={toggleSelect}
+              value={filter.filterByDate}
+              onChange={handleFilterChange('filterByDate')}
+            >
+              <MenuItem value=""><em>None</em></MenuItem>
+              <MenuItem value={'most-recently-updated'}>Most Recently Updated</MenuItem>
+              <MenuItem value={'least-recently-updated'}>Least Recently Updated</MenuItem>
+              <MenuItem value={'most-recently-created'}>Most Recently Created</MenuItem>
+              <MenuItem value={'least-recently-created'}>Least Recently Created</MenuItem>
+            </Select>
+          </FormControl>
 
         <ViewGridButton disabled={view === 'view-grid'} action={setGridView}/>
         <ViewDetailedButton disabled={view === 'view-detailed'} action={setDetailedView} />

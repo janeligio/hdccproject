@@ -20,25 +20,20 @@ class App extends Component {
       jobsites: [],
     };
   }
+   getDB = () => {
+    axios
+      .get('/api/reports')
+      .then(res => this.setState({
+        jobsites: _.orderBy(res.data, ['name'], ['asc'])
+        })
+      )
+      .catch(err => console.log(err));
+  }
 
-  componentDidUpdate(prevProps){
-    if(this.state.jobsites !== prevProps.jobsites){
-      axios
-        .get('/api/reports')
-        .then(res => this.setState({jobsites: 
-          _.orderBy(res.data, ['name'], ['asc'])}))
-        .catch(err => console.log(err));
-      }
-  }
   componentDidMount() {
-      axios
-        .get('/api/reports')
-        .then(res => this.setState({
-          jobsites: _.orderBy(res.data, ['name'], ['asc'])
-          })
-        )
-        .catch(err => console.log(err));
+    this.getDB();
   }
+
   render() {
      const mainPageStyle = {
       marginLeft: '20%',

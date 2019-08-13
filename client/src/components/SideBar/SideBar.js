@@ -8,7 +8,7 @@ const fontSize = {
 
 const NavigationalLink = (props) => {
 	return (
-		<li className={props.path === window.location.pathname ? "active" : ""}><NavLink onClick={() => console.log(props.data)} exact to={`${props.path}`} activeClassName="active">{props.title}</NavLink></li>
+		<li className={props.path === window.location.pathname ? "active" : ""}><NavLink exact to={`${props.path}`} activeClassName="active">{props.title}</NavLink></li>
 		);
 };
 

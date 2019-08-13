@@ -124,7 +124,7 @@ class CreateReport extends React.Component {
 		axios.post('/api/reports/create', newData)
 			.then(res => console.log(res))
 			.catch(err => console.log(err));			
-			this.props.history.push('/');		
+			this.props.history.push('/network');		
 		});
 	}
 	render() {

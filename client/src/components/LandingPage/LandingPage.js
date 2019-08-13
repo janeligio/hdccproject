@@ -10,6 +10,8 @@ import FileDownload from 'js-file-download';
 import ReactToPrint from 'react-to-print';
 import JobSiteNetworkPrintable from '../Printables/JobSiteNetworkPrintable';
 
+import _ from 'lodash';
+
 const useStyles = makeStyles(theme => ({
   root: {
     width: '100%',
@@ -71,7 +73,9 @@ export default function LandingPage(props) {
 
       <div style={{display:'none'}}>
       	<div ref={networkPageRef}>
-	      <JobSiteNetworkPrintable jobsites={props.jobsites} />
+		  <JobSiteNetworkPrintable title="Job Sites" jobsites={_.orderBy(props.jobsites, 
+			site => site.subnet,
+			['asc'])} />
       	</div>
       </div>
 

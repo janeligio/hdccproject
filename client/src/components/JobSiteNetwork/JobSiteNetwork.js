@@ -122,7 +122,7 @@ const DeleteButton = ({action}) => {
       			</Button>;
 };
 
-const EditButton = ({path}) => {
+const EditButton = () => {
   const classes = useStyles();
 	return (
       <Fab color="primary" aria-label="Edit" className={classes.fab}>
@@ -253,7 +253,7 @@ export default function JobSiteNetwork(props) {
 
 			      <div style={{display:'none'}}>
 			      	<div ref={activeNetworkPageRef}>
-				      <JobSiteNetworkPrintable jobsites={sortedJobsites} />
+				      <JobSiteNetworkPrintable title="Active Job Sites" jobsites={sortedJobsites} />
 			      	</div>
 			      </div>
 
@@ -295,7 +295,7 @@ export default function JobSiteNetwork(props) {
 
 			      <div style={{display:'none'}}>
 			      	<div ref={inactiveNetworkPageRef}>
-				      <JobSiteNetworkPrintable jobsites={sortedInactiveJobsites} />
+				      <JobSiteNetworkPrintable title="Inactive Job Sites" jobsites={sortedInactiveJobsites} />
 			      	</div>
 			      </div>
 

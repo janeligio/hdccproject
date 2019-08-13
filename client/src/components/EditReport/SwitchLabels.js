@@ -16,7 +16,7 @@ export default function SwitchLabels(props) {
             color="primary"
           />
         }
-        label={`${props.active?`Deactivate`:`Activate`} Job Site`}
+        label={props.active ? `Active` : `Inactive`}
       />
     </FormGroup>
   );

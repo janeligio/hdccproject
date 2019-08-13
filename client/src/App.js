@@ -24,7 +24,7 @@ class App extends Component {
     axios
       .get('/api/reports')
       .then(res => this.setState({
-        jobsites: _.orderBy(res.data, ['name'], ['asc'])
+        jobsites: _.orderBy(res.data, site => site.name.toLowerCase(), ['asc'])
         })
       )
       .catch(err => console.log(err));

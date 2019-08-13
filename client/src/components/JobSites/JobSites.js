@@ -120,7 +120,7 @@ export default function JobSites(props) {
     // // }
 
     if(filter.filterByDate !== '') {
-        // Case by case filter by date
+      // Case by case filter by date
         switch(filter.filterByDate) {
           case 'subnet-desc':
             filteredSites = _.sortBy(filteredSites, 'subnet', 'desc')

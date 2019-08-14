@@ -19,7 +19,7 @@ export default function SideBar(props) {
 		  <aside className="sidebar">
 		    <nav style={fontSize} className="nav">
 		      <ul>
-		        <li id="sidebar-header" className="active"><a id="sidebar-header-button" href="/">HDCC Job Sites</a></li>
+		        <li onClick={e => e.preventDefault()} id="sidebar-header" className="active"><a id="sidebar-header-button" href="/">HDCC Job Sites</a></li>
 		        {[
 		        	{path:'/',title:'Home',},
 		        	{path:'/network',title:'Network',},

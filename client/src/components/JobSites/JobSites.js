@@ -245,8 +245,35 @@ export default function JobSites(props) {
           content={() => ref.current}
         />
         </div>
-   	    <div ref={ref}>
+   	    <div>
           {view === 'view-grid' ? grid() : sites()}
+        </div>
+
+        <div style={{display:'', }}>
+          <table ref={ref} style={{padding:'1em'
+            }}>
+            <tr>
+              <td>Site</td>
+              <td>Subnet</td>
+              <td>CircuitID</td>
+              <td>Cnct. Type</td>
+              <td>Internal</td>
+              <td>External</td>
+            </tr>
+            {filteredSites.map(site => <tr
+            style={{
+
+              }}
+            >           
+                <td style={{backgroundColor:'#CCC'}}><b>{site.name}</b></td>
+                <td>{site.subnet}</td>
+                <td style={{backgroundColor:'#CCC'}}>{site.circuitID}</td>
+                <td>{site.connectionType}</td>
+                <td style={{backgroundColor:'#CCC'}}>{site.internalIP}</td>
+                <td>{site.externalIP}</td>
+            </tr>
+            )}
+          </table>
         </div>
 	</div> 	
       );

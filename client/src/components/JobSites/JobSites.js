@@ -73,11 +73,13 @@ export default function JobSites(props) {
     filterByDate: '',
     filterByActive: true,
     filterByInactive: true,
-    keywords: []
   });
   const [view, setView] = React.useState('view-grid');
   const [open, setOpen] = React.useState(false);
   const [ref] = React.useState(useRef());
+  const [activeMessage, setActiveMessage] = React.useState('');
+  const [keywords, setKeywords] = React.useState('');
+  const [sortedMessage, setSortedMessage] = React.useState('');
 
   useEffect(() => {
     setJobsites(props.jobsites);
@@ -104,7 +106,27 @@ export default function JobSites(props) {
   }
   const filterJobSites = useCallback( () => {
     let filteredSites = jobsites;
+    setKeywords('');
     if(filter.name.length !== 0) {
+      setKeywords(
+      <>Keywords: {filter.name.trim().split(" ").map((word, index, array) => {
+        if(word === '') {
+          return null;
+        }
+        console.log(array);
+        let separator;
+        if(array.length === 1) {
+          separator = '';
+        } else if(index !== array.length-1)  {
+          separator = ', ';
+        } else {
+          separator = '';
+        }
+        return <em>{word}{separator}</em>
+        })}
+        .</>
+        );
+        
       filteredSites = _.filter(filteredSites, site => {
         const siteData = 
           `${site.subnet.toLowerCase()} ${site.name.toLowerCase()} 
@@ -118,26 +140,32 @@ export default function JobSites(props) {
     //     return name.indexOf(filter.name.toLowerCase()) !== -1
     //   });
     // // }
-
+    setSortedMessage('');
     if(filter.filterByDate !== '') {
       // Case by case filter by date
         switch(filter.filterByDate) {
           case 'subnet-desc':
+            setSortedMessage(<>Sorted by: subnet (low-high).</>)
             filteredSites = _.sortBy(filteredSites, 'subnet', 'desc')
             break;
           case 'subnet-asc':
+            setSortedMessage(<>Sorted by: subnet (high-low).</>)
             filteredSites = _.sortBy(filteredSites, 'subnet', 'desc').reverse()
             break;          
           case 'most-recently-updated':
+            setSortedMessage(<>Sorted by: most recently updated.</>)
             filteredSites = filterDate(filteredSites, 'lastUpdated', 'desc')
             break;          
           case 'least-recently-updated':
+            setSortedMessage(<>Sorted by: least recently updated.</>)
             filteredSites = filterDate(filteredSites, 'lastUpdated', 'asc')
             break;
           case 'most-recently-created':
+            setSortedMessage(<>Sorted by: most recently created.</>)
             filteredSites = filterDate(filteredSites, 'date', 'desc')
             break;
           case 'least-recently-created':
+            setSortedMessage(<>Sorted by: least recently created.</>)
             filteredSites = filterDate(filteredSites, 'date', 'asc')
             break;
           default:
@@ -146,16 +174,18 @@ export default function JobSites(props) {
 
     // Filter by active/inactive
     if(filter.filterByActive && filter.filterByInactive) {
-
+      setActiveMessage(<>Showing <b>active</b> and <b>inactive</b> job sites.</>);
     } else if(!filter.filterByActive && !filter.filterByInactive) {
-
+      setActiveMessage(<>Showing <b>active</b> and <b>inactive</b> job sites.</>);
     } else {
       if(filter.filterByActive) {
         filteredSites = _.filter(filteredSites, o => o.active);
+        setActiveMessage(<>Showing <b>active</b> job sites.</>);
       }
       if(filter.filterByInactive) {
           filteredSites = _.filter(filteredSites, o => !o.active);
-      }
+          setActiveMessage(<>Showing <b>inactive</b> job sites.</>);
+        }
     }
 
   // Filter by keywords
@@ -186,6 +216,50 @@ export default function JobSites(props) {
 
 	return (
 	<div>
+          <div style={{display:'none', }}>
+          <div ref={ref}>
+          <div style={{paddingTop:'1em'}}>
+          <p style={{paddingLeft:'1em', marginBottom:0}}>
+          {activeMessage}
+           </p>
+           {keywords !== '' &&
+           <p style={{paddingLeft:'1em', margin:0}}>
+             {keywords}
+             </p>
+           }
+           {sortedMessage !== '' &&
+           <p style={{paddingLeft:'1em', margin:0}}>
+          {sortedMessage}
+          </p>  
+           }
+           </div>
+         <table style={{padding:'1em',
+            }}>
+            <tr>
+              <td>Job Site</td>
+              <td>Subnet</td>
+              <td>CircuitID</td>
+              <td>Cnct. Type</td>
+              <td>Internal</td>
+              <td>External</td>
+            </tr>
+            {filteredSites.map((site, index) => <tr
+            style={{
+              backgroundColor:`${index%2!==1 ? '#CCC': ''}`
+              }}
+            >
+                <td>{!site.active && '*'}{site.name}</td>
+                <td>{site.subnet}</td>
+                <td>{site.circuitID}</td>
+                <td>{site.connectionType}</td>
+                <td>{site.internalIP}</td>
+                <td>{site.externalIP}</td>
+            </tr>
+            )}
+          </table>
+          </div>
+        </div>
+
         <div style={{display:'flex',flexWrap: 'wrap'}}>
         <TextField
 	        id="Search"
@@ -247,33 +321,6 @@ export default function JobSites(props) {
         </div>
    	    <div>
           {view === 'view-grid' ? grid() : sites()}
-        </div>
-
-        <div style={{display:'', }}>
-          <table ref={ref} style={{padding:'1em'
-            }}>
-            <tr>
-              <td>Site</td>
-              <td>Subnet</td>
-              <td>CircuitID</td>
-              <td>Cnct. Type</td>
-              <td>Internal</td>
-              <td>External</td>
-            </tr>
-            {filteredSites.map(site => <tr
-            style={{
-
-              }}
-            >           
-                <td style={{backgroundColor:'#CCC'}}><b>{site.name}</b></td>
-                <td>{site.subnet}</td>
-                <td style={{backgroundColor:'#CCC'}}>{site.circuitID}</td>
-                <td>{site.connectionType}</td>
-                <td style={{backgroundColor:'#CCC'}}>{site.internalIP}</td>
-                <td>{site.externalIP}</td>
-            </tr>
-            )}
-          </table>
         </div>
 	</div> 	
       );

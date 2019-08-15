@@ -174,9 +174,9 @@ export default function JobSites(props) {
 
     // Filter by active/inactive
     if(filter.filterByActive && filter.filterByInactive) {
-      setActiveMessage(<>Showing <b>active</b> and <b>inactive</b> job sites.</>);
+      setActiveMessage(<>Showing <b>active</b> and <b>*inactive</b> job sites.</>);
     } else if(!filter.filterByActive && !filter.filterByInactive) {
-      setActiveMessage(<>Showing <b>active</b> and <b>inactive</b> job sites.</>);
+      setActiveMessage(<>Showing <b>active</b> and <b>*inactive</b> job sites.</>);
     } else {
       if(filter.filterByActive) {
         filteredSites = _.filter(filteredSites, o => o.active);
@@ -184,7 +184,7 @@ export default function JobSites(props) {
       }
       if(filter.filterByInactive) {
           filteredSites = _.filter(filteredSites, o => !o.active);
-          setActiveMessage(<>Showing <b>inactive</b> job sites.</>);
+          setActiveMessage(<>Showing <b>*inactive</b> job sites.</>);
         }
     }
 
@@ -220,7 +220,7 @@ export default function JobSites(props) {
           <div ref={ref}>
           <div style={{paddingTop:'1em'}}>
           <p style={{paddingLeft:'1em', marginBottom:0}}>
-          {activeMessage}
+          {activeMessage} 
            </p>
            {keywords !== '' &&
            <p style={{paddingLeft:'1em', margin:0}}>
